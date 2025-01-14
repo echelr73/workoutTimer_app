@@ -1,4 +1,4 @@
-Para arrancar Ionicen local:
+Para arrancar Ionic en local:
 ionic serve --watch
 
 Para compilar el proyecto antes de Abrir Android:
