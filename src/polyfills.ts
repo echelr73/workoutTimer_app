@@ -53,3 +53,15 @@ import 'zone.js';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+(window as any).global = window;
+(window as any).process = {
+  env: { DEBUG: undefined },
+};
+
+import * as crypto from 'crypto-browserify';
+(window as any).crypto = crypto;
+
+import * as stream from 'stream-browserify';
+(window as any).stream = stream;
+
+
