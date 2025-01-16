@@ -1,0 +1,45 @@
+<ion-grid>
+  <ion-row>
+    <ion-col *ngIf="!showForm">
+      <ion-row>
+        <ion-col>
+          <app-list-data [data]="structures" emptyText="label.no.structures" addText="label.add.structure"
+            (add)="onShowForm()">
+
+            <ng-template #templateData let-item="item">
+
+              <ion-item>
+                <ion-label>
+                  <ion-grid>
+                    <ion-row>
+                      <h1>{{item.Name}}</h1>
+                    </ion-row>
+
+                    <ion-row>
+                      <ion-col size="7">
+                        <p>{{'label.structure.preparation' | translate}} {{convertToMinutesAndSeconds(item.PreparationTime)}}</p>
+                        <p>{{'label.structure.training' | translate}} {{convertToMinutesAndSeconds(item.TrainingTime)}}</p>
+                        <p>{{'label.structure.rest' | translate}} {{convertToMinutesAndSeconds(item.RestTime)}}</p>
+                      </ion-col>
+                      <ion-col size="5">
+                        <p>{{'label.structure.rounds' | translate}} {{item.Rounds}}</p>
+                        <p>{{'label.structure.series' | translate}} {{item.Series}}</p>
+                        <p>{{'label.structure.restBetweenS' | translate}} {{convertToMinutesAndSeconds(item.RestBetweenSeries)}}</p>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-label>
+
+              </ion-item>
+
+            </ng-template>
+
+          </app-list-data>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <ion-col *ngIf="showForm">
+
+    </ion-col>
+  </ion-row>
+</ion-grid>

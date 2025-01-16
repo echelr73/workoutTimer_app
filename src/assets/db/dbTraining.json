@@ -45,7 +45,7 @@
                 { "column": "UserId", "value": "INTEGER NOT NULL", "foreignkey": "UserId REFERENCES User(Id) ON DELETE CASCADE" }
             ],
             "values": [
-                [1, "Tabata", 180, 1200, 60, 8, 1, 360, 1]
+                [1, "Tabata", 3, 60, 30, 4, 3, 240, 1]
             ]
         }
     ]

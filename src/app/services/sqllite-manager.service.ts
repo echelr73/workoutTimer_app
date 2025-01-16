@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CapacitorSQLite, JsonSQLite } from '@capacitor-community/sqlite';
+import { CapacitorSQLite, capSQLiteValues, JsonSQLite } from '@capacitor-community/sqlite';
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
 import { AlertController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
+import { Structure } from '../models/structure';
+import { Configuration } from '../models/configuration';
 
 @Injectable({
   providedIn: 'root'
@@ -89,5 +91,44 @@ export class SqlliteManagerService {
       this.dbName = dbName.value;
     }
     return this.dbName;
+  }
+
+  async getConfiguration(id: number){
+    let sql = 'SELECT * FROM configuration WHERE userId = ' + id;
+
+    const dbName = await this.getDBName();
+    return CapacitorSQLite.query({
+      database: dbName, 
+      statement: sql
+    }).then((response: capSQLiteValues) => {
+
+      let configurations: Configuration[] = [];
+      for (let index = 0; index < response.values.length; index++){
+        const row = response.values[index];
+        let configuration = row as Configuration;
+        configurations.push(configuration);
+      }
+    
+      return Promise.resolve(configurations);
+    }).catch(error => Promise.reject(error));
+  }
+
+  async getStructures(id: number){
+    let sql = 'SELECT * FROM trainingStructure WHERE userId = ' + id;
+
+    const dbName = await this.getDBName();
+    return CapacitorSQLite.query({
+      database: dbName, 
+      statement: sql
+    }).then((response: capSQLiteValues) => {
+      let structures: Structure[] = [];
+      for (let index = 0; index < response.values.length; index++){
+        const row = response.values[index];
+        let structure = row as Structure;
+        structures.push(structure);
+      }
+      return Promise.resolve(structures);
+    }).catch(error => Promise.reject(error));
+
   }
 }

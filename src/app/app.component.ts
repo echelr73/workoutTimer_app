@@ -3,6 +3,7 @@ import { Device } from '@capacitor/device';
 import { Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { SqlliteManagerService } from './services/sqllite-manager.service';
+import { AlertService } from './services/alert.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ export class AppComponent {
   constructor( 
     private translate: TranslateService,
     private platform: Platform,
-    private sqliteService: SqlliteManagerService
+    private sqliteService: SqlliteManagerService,
+    private alertServie: AlertService
   ) {
 
     this.translate.setDefaultLang('es');
@@ -41,6 +43,9 @@ export class AppComponent {
       this.sqliteService.init();
       this.sqliteService.dbReady.subscribe(isReady => {
           this.load = isReady;
+          if (this.load){
+            this.alertServie.alertMessage('Info', 'Database ready');
+          }
       });
     });
   }
