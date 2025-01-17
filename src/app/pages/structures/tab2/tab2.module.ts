@@ -1,4 +1,4 @@
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, IonItemSliding } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,8 @@ import { Tab2PageRoutingModule } from './tab2-routing.module';
 import { ListStructuresComponent } from './components/list-structures/list-structures.component';
 import { ListDataComponent } from 'src/app/shared/list-data/list-data.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { FormStructuresComponent } from './components/form-structures/form-structures.component';
+import { CustomPickerComponent } from 'src/app/shared/custom-picker/custom-picker.component';
 
 @NgModule({
   imports: [
@@ -17,10 +19,12 @@ import { TranslateModule } from '@ngx-translate/core';
     Tab2PageRoutingModule,
     TranslateModule.forChild(),
     ListDataComponent,
+    CustomPickerComponent,
   ],
   declarations: [
     Tab2Page,
-    ListStructuresComponent
+    ListStructuresComponent,
+    FormStructuresComponent
   ]
 })
 export class Tab2PageModule { }

@@ -1,11 +1,10 @@
 export class Structure {
-    id: number;
-    name: string;
-    preparationTime: number;
-    trainingTime: number;
-    restTime: number;
-    rounds: number;
-    series: number;
-    restBetweenSeries: number;
-    userid: number;
+    Id: number;
+    Name: string;
+    PreparationTime: number;
+    TrainingTime: number;
+    RestTime: number;
+    Rounds: number;
+    Series: number;
+    RestBetweenSeries: number;
 }

@@ -44,7 +44,10 @@ export class AppComponent {
       this.sqliteService.dbReady.subscribe(isReady => {
           this.load = isReady;
           if (this.load){
-            this.alertServie.alertMessage('Info', 'Database ready');
+            this.alertServie.alertMessage(
+              this.translate.instant('Info'),
+              this.translate.instant('Database ready')
+            );
           }
       });
     });

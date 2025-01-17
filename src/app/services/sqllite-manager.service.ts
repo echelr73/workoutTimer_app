@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CapacitorSQLite, capSQLiteValues, JsonSQLite } from '@capacitor-community/sqlite';
+import { CapacitorSQLite, capSQLiteChanges, capSQLiteValues, JsonSQLite } from '@capacitor-community/sqlite';
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
 import { AlertController } from '@ionic/angular';
@@ -93,8 +93,8 @@ export class SqlliteManagerService {
     return this.dbName;
   }
 
-  async getConfiguration(id: number){
-    let sql = 'SELECT * FROM configuration WHERE userId = ' + id;
+  async getConfiguration(){
+    let sql = 'SELECT * FROM configuration';
 
     const dbName = await this.getDBName();
     return CapacitorSQLite.query({
@@ -113,8 +113,8 @@ export class SqlliteManagerService {
     }).catch(error => Promise.reject(error));
   }
 
-  async getStructures(id: number){
-    let sql = 'SELECT * FROM trainingStructure WHERE userId = ' + id;
+  async getStructures(){
+    let sql = 'SELECT * FROM trainingStructure';
 
     const dbName = await this.getDBName();
     return CapacitorSQLite.query({
@@ -130,5 +130,30 @@ export class SqlliteManagerService {
       return Promise.resolve(structures);
     }).catch(error => Promise.reject(error));
 
+  }
+
+  async createStructure(structure: Structure){ 
+    const dbName = await this.getDBName();
+    let sql = 'INSERT INTO trainingStructure (name, preparationTime, trainingTime, restTime, rounds, series, restBetweenSeries) VALUES (?,?,?,?,?,?,?)';
+    let values = [ structure.Name, structure.PreparationTime, structure.TrainingTime, structure.RestTime, structure.Rounds, structure.Series, structure.RestBetweenSeries];
+
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: sql, 
+          values: [
+            values
+          ]
+        }
+      ] 
+      }).then((changes: capSQLiteChanges) => {
+        if (this.isWeb){
+          CapacitorSQLite.saveToStore({
+            database: dbName
+          });
+        }
+      return changes;
+    }).catch(error => Promise.reject(error));
   }
 }
