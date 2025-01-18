@@ -64,7 +64,11 @@
     "label.settings.voiceNotification": "Notificación de voz:",
     "label.settings.duckingEffect": "Efecto de atenuación:",
     "label.db.info": "Información",
-    "label.db.info.message": "La base de datos esta lista para ser usada"
+    "label.db.info.message": "La base de datos esta lista para ser usada",
+    "label.preparation": "PREPÁRATE:",
+    "label.training": "ENTRENAR:",
+    "label.rest": "DESCANSAR:",
+    "label.restBetweenSeries": "DESCANSAR E/S:"
 
     
 }

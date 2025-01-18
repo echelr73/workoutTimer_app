@@ -64,5 +64,9 @@
     "label.settings.voiceNotification": "Voice notification:",
     "label.settings.duckingEffect": "Ducking effect:",
     "label.db.info": "Info",
-    "label.db.info.message": "Database ready"
+    "label.db.info.message": "Database ready",
+    "label.preparation": "PREPARATION:",
+    "label.training": "TRAINING:",
+    "label.rest": "REST:",
+    "label.restBetweenSeries": "REST B/S:"
 }

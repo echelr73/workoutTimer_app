@@ -10,6 +10,7 @@ import { ListDataComponent } from 'src/app/shared/list-data/list-data.component'
 import { TranslateModule } from '@ngx-translate/core';
 import { FormStructuresComponent } from './components/form-structures/form-structures.component';
 import { CustomPickerComponent } from 'src/app/shared/custom-picker/custom-picker.component';
+import { TrainingStructureComponent } from './components/training-structure/training-structure.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { CustomPickerComponent } from 'src/app/shared/custom-picker/custom-picke
   declarations: [
     Tab2Page,
     ListStructuresComponent,
-    FormStructuresComponent
+    FormStructuresComponent,
+    TrainingStructureComponent,
   ]
 })
 export class Tab2PageModule { }

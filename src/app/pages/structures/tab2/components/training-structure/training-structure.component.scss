@@ -1,0 +1,74 @@
+ion-toolbar {
+    text-align: center;
+    ion-title {
+        font-size: 1.5em;
+        padding-top: 5px;
+    }
+}
+
+.time-total-header {
+    padding: 5px;
+    text-align: center;
+    background-color: black;
+    font-size: 1.5em;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.timer-container {
+    height: 100%;
+    text-align: center;
+    color: black;
+    background-color: yellow;
+    padding: 10px;
+
+    .time-display {
+
+        .status,
+        .sub-status {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .time-main {
+            font-size: 4em;
+            font-weight: bold;
+            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        .sub-time {
+            font-size: 2em;
+            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+    }
+
+    .counters {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: black;
+
+        .rounds,
+        .cycles {
+            font-size: 4em;
+            color: #1E90FF;
+            padding-left: 20px;
+            padding-right: 20px;
+            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        .play-button {
+            --button-border-radius: 50%;
+        }
+    }
+
+    .labels {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+        color: yellow;
+        background-color: black;
+        font-size: 0.8em;
+        width: 100%;
+    }
+}

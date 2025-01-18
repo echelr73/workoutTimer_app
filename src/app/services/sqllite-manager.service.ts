@@ -228,4 +228,21 @@ export class SqlliteManagerService {
       return changes;
     }).catch(error => Promise.reject(error));
   }
+
+  async getStructureForId(id: number){
+    const dbName = await this.getDBName();
+    let sql = 'SELECT * FROM trainingStructure WHERE id=?';
+    let values = id;
+
+    return CapacitorSQLite.query({
+      database: dbName, 
+      statement: sql,
+      values: [values]
+    }).then((response: capSQLiteValues) => {
+      let structure: Structure = new Structure();
+      structure = response.values[0] as Structure;
+      return Promise.resolve(structure);
+    }).catch(error => Promise.reject(error));
+
+  }
 }

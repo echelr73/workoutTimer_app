@@ -7,7 +7,13 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class Tab2Page {
+  public showStructures = false;
+
 
   constructor() {}
+
+  viewStructures() {
+    this.showStructures = !this.showStructures;
+  }
 
 }
