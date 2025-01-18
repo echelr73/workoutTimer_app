@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Structure } from 'src/app/models/structure';
@@ -16,6 +16,8 @@ export class ListStructuresComponent implements OnInit {
   public structures: Structure[];
   public structureSelected: Structure;
   public showForm: boolean;
+
+  @Output() itemSelected = new EventEmitter<number>();
 
   constructor(
     private sqliteService: SqlliteManagerService,
@@ -87,6 +89,10 @@ export class ListStructuresComponent implements OnInit {
       );
     });
 
+  }
+
+  selectItem(id: number) {
+    this.itemSelected.emit(id);
   }
 
 

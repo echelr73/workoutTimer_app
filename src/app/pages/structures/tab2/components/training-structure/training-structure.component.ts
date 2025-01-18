@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Structure } from 'src/app/models/structure';
 import { SqlliteManagerService } from 'src/app/services/sqllite-manager.service';
@@ -11,6 +11,7 @@ import { SqlliteManagerService } from 'src/app/services/sqllite-manager.service'
 })
 export class TrainingStructureComponent implements OnInit {
 
+  @Input() structureId: number;
   public structureSelected: Structure;
   public totalTime: number;
   public totalTimeMinutes: number;
@@ -34,7 +35,7 @@ export class TrainingStructureComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTrainingStructure(1);
+    this.getTrainingStructure(this.structureId);
 
   }
 
@@ -50,9 +51,8 @@ export class TrainingStructureComponent implements OnInit {
   }
 
   calculateTotal() {
-    this.totalTime = (
-      (this.structureSelected.PreparationTime +
-        this.structureSelected.TrainingTime +
+    this.totalTime = this.structureSelected.PreparationTime + (
+      (this.structureSelected.TrainingTime +
         this.structureSelected.RestTime) *
       this.structureSelected.Rounds +
       this.structureSelected.RestBetweenSeries

@@ -68,5 +68,7 @@
     "label.preparation": "PREPARATION:",
     "label.training": "TRAINING:",
     "label.rest": "REST:",
-    "label.restBetweenSeries": "REST B/S:"
+    "label.restBetweenSeries": "REST B/S:",
+    "label.roundsRemaining": "ROUNDS REMAINING",
+    "label.seriesRemaining": "SERIES REMAINING"
 }

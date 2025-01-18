@@ -8,12 +8,18 @@ import { Component } from '@angular/core';
 })
 export class Tab2Page {
   public showStructures = false;
+  public structureId = 1;
 
 
   constructor() {}
 
   viewStructures() {
     this.showStructures = !this.showStructures;
+  }
+
+  onItemSelected(id: number) {
+    this.showStructures = false;
+    this.structureId = id;
   }
 
 }
