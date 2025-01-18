@@ -15,7 +15,7 @@
                 { "column": "DuckingEffect", "value": "BOOLEAN NOT NULL" }
             ],
             "values": [
-                [1, true, "Normal", 10, true, true]
+                [1, true, "Normal", 8, false, false]
             ]
         },
         {

@@ -1,9 +1,8 @@
 export class Configuration {
-    id: number;
-    beepSounds: boolean;
-    beepSoundSelected: string;
-    soundVolume: number;
-    voiceNotification: boolean;
-    duckingEffect: boolean;
-    userId: number;
+    Id: number;
+    BeepSounds: boolean;
+    BeepSoundSelected: string;
+    SoundVolume: number;
+    VoiceNotification: boolean;
+    DuckingEffect: boolean;
 }

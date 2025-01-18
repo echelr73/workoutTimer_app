@@ -33,4 +33,8 @@ export class ListSettingsComponent  implements OnInit {
       return `${value}0`;
     }
 
+    getConfiguration() {
+      return this.configuration[0];
+    }
+
 }

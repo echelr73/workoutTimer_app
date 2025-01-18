@@ -156,4 +156,76 @@ export class SqlliteManagerService {
       return changes;
     }).catch(error => Promise.reject(error));
   }
+
+  async updateStructure(structure: Structure){
+    const dbName = await this.getDBName();
+    let sql = 'UPDATE trainingStructure SET name=?, preparationTime=?, trainingTime=?, restTime=?, rounds=?, series=?, restBetweenSeries=? WHERE id=?';
+    let values = [ structure.Name, structure.PreparationTime, structure.TrainingTime, structure.RestTime, structure.Rounds, structure.Series, structure.RestBetweenSeries, structure.Id];
+
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: sql, 
+          values: [
+            values
+          ]
+        }
+      ] 
+      }).then((changes: capSQLiteChanges) => {
+        if (this.isWeb){
+          CapacitorSQLite.saveToStore({
+            database: dbName
+          });
+        }
+      return changes;
+    }).catch(error => Promise.reject(error));
+  }
+
+  async deleteStructure(id: number){
+    const dbName = await this.getDBName();
+    let sql = 'DELETE FROM trainingStructure WHERE id=?';
+    let values = [id];
+
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+        statement: sql,
+        values: values
+      }
+    ]
+    }).then(() => {
+      if (this.isWeb){
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
+    }).catch(error => Promise.reject(error));
+  }
+
+  async updateConfiguration(configuration: Configuration){
+    const dbName = await this.getDBName();
+    let sql = 'UPDATE configuration SET beepSounds=?, beepSoundSelected=?, SoundVolume=?, voiceNotification=?, DuckingEffect=? WHERE id=?';
+    let values = [ configuration.BeepSounds, configuration.BeepSoundSelected, configuration.SoundVolume, configuration.VoiceNotification, configuration.DuckingEffect, configuration.Id];
+
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: sql, 
+          values: [
+            values
+          ]
+        }
+      ] 
+      }).then((changes: capSQLiteChanges) => {
+        if (this.isWeb){
+          CapacitorSQLite.saveToStore({
+            database: dbName
+          });
+        }
+      return changes;
+    }).catch(error => Promise.reject(error));
+  }
 }

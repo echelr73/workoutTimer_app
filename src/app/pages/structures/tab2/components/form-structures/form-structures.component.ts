@@ -56,7 +56,7 @@ export class FormStructuresComponent implements OnInit {
   onPickerChange(event: any, controlName: string) {
     this[controlName] = event.detail.value;
   }
-  
+
 
   closeFormEmit() {
     this.closeForm.emit(true);
@@ -78,10 +78,28 @@ export class FormStructuresComponent implements OnInit {
         this.translateService.instant('label.success.message.add.structure')
       );
       this.closeFormEmit();
+    }).catch(error => {
+      this.alertService.alertMessage(
+        this.translateService.instant('label.error'),
+        this.translateService.instant('label.error.message.add.structure')
+      );
     });
   }
 
   updateStructure() {
+    this.getTotalSeconds();
+    this.sqliteService.updateStructure(this.structure).then(() => {
+      this.alertService.alertMessage(
+        this.translateService.instant('label.success'),
+        this.translateService.instant('label.success.message.edit.structure')
+      );
+      this.closeFormEmit();
+    }).catch(error => {
+      this.alertService.alertMessage(
+        this.translateService.instant('label.error'),
+        this.translateService.instant('label.error.message.edit.structure')
+      );
+    });
 
   }
 
@@ -102,15 +120,15 @@ export class FormStructuresComponent implements OnInit {
     const preparationTimeConverted = this.convertSecondsToMinutesAndSeconds(this.structure.PreparationTime);
     this.preparationTimeMinutes = preparationTimeConverted.minutes;
     this.preparationTimeSeconds = preparationTimeConverted.seconds;
-  
+
     const trainingTimeConverted = this.convertSecondsToMinutesAndSeconds(this.structure.TrainingTime);
     this.trainingTimeMinutes = trainingTimeConverted.minutes;
     this.trainingTimeSeconds = trainingTimeConverted.seconds;
-  
+
     const restTimeConverted = this.convertSecondsToMinutesAndSeconds(this.structure.RestTime);
     this.restTimeMinutes = restTimeConverted.minutes;
     this.restTimeSeconds = restTimeConverted.seconds;
-  
+
     const restBetweenSeriesConverted = this.convertSecondsToMinutesAndSeconds(this.structure.RestBetweenSeries);
     this.restBetweenSeriesMinutes = restBetweenSeriesConverted.minutes;
     this.restBetweenSeriesSeconds = restBetweenSeriesConverted.seconds;

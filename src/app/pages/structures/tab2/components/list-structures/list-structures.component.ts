@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { Structure } from 'src/app/models/structure';
+import { AlertService } from 'src/app/services/alert.service';
 import { SqlliteManagerService } from 'src/app/services/sqllite-manager.service';
 
 @Component({
@@ -17,7 +19,8 @@ export class ListStructuresComponent implements OnInit {
 
   constructor(
     private sqliteService: SqlliteManagerService,
-    private alertController: AlertController,
+    private translateService: TranslateService,
+    private alertService: AlertService,
   ) {
     this.showForm = false;
     this.structures = [];
@@ -60,13 +63,30 @@ export class ListStructuresComponent implements OnInit {
   }
 
   async deleteStructureConfirm(item: Structure) {
-    const alert = await this.alertController.create({
-      header: 'Sin acceso a la base de datos',
-      message: 'Esta app necesita acceso a la base de datos para funcionar',
-      buttons: ['OK']
+    const self = this;
+    this.alertService.alertConfirm(
+      this.translateService.instant('label.confirm'),
+      this.translateService.instant('label.confirm.message.structure'),
+      () => {
+        self.deleteStructure(item);
+      }
+    );
+  }
+
+  deleteStructure(item: Structure) {
+    this.sqliteService.deleteStructure(item.Id).then(() => {
+      this.alertService.alertMessage(
+        this.translateService.instant('label.success'),
+        this.translateService.instant('label.success.message.remove.structure')
+      );
+      this.getStructures();
+    }).catch(error => {
+      this.alertService.alertMessage(
+        this.translateService.instant('label.error'),
+        this.translateService.instant('label.error.message.remove.structure')
+      );
     });
-    await alert.present();
-    this.structureSelected = item;
+
   }
 
 

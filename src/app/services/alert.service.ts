@@ -24,7 +24,7 @@ export class AlertService {
     }).then(alert => alert.present());
   }
 
-  async alertConfig(
+  async alertConfirm(
     header: string,
     message: string,
     functionOk: Function

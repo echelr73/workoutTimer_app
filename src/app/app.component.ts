@@ -45,8 +45,8 @@ export class AppComponent {
           this.load = isReady;
           if (this.load){
             this.alertServie.alertMessage(
-              this.translate.instant('Info'),
-              this.translate.instant('Database ready')
+              this.translate.instant('label.db.info'),
+              this.translate.instant('label.db.info.message')
             );
           }
       });
