@@ -4,28 +4,54 @@
     <div class="time-total-header">
       <div class="status">{{totalTimeMinutes | number: '2.0'}}:{{totalTimeSeconds | number: '2.0'}}</div>
     </div>
+    <ion-buttons slot="end">
+      <ion-button (click)="resetStructure()">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="timer-container">
     <div class="time-display">
-      <div class="status">{{'label.preparation' | translate}}</div>
-      <div class="time-main">{{preparationTimeMinutes | number: '2.0'}}:{{preparationTimeSeconds | number: '2.0'}}</div>
-      <div class="sub-status">{{'label.training' | translate}}</div>
-      <div class="sub-time">{{trainingTimeMinutes | number: '2.0'}}:{{trainingTimeSeconds | number: '2.0'}}</div>
-      <div class="sub-status">{{'label.rest' | translate}}</div>
-      <div class="sub-time">{{restTimeMinutes | number: '2.0'}}:{{restTimeSeconds | number: '2.0'}}</div>
-      <div class="sub-status">{{'label.restBetweenSeries' | translate}}</div>
-      <div class="sub-time">{{restBetweenSeriesMinutes | number: '2.0'}}:{{restBetweenSeriesSeconds | number: '2.0'}}</div>
-    </div>
+      <div [ngClass]="{'status show': currentPhase === 'Preparation', 'hidden': currentPhase !== 'Preparation'}">{{'label.preparation' | translate}}</div>
+
+      <div [ngClass]="{'time-main show': currentPhase === 'Preparation', 'hidden': currentPhase !== 'Preparation'}">{{preparationTimeMinutes | number: '2.0'}}:{{preparationTimeSeconds | number: '2.0'}}</div>
+
+      <div [ngClass]="{
+        'sub-status show': (currentPhase === 'Preparation' || (currentPhase === 'Rest' && currentRound < structureSelected.Rounds)),
+        'status show': currentPhase === 'Training', 'hidden': currentPhase !== 'Preparation' && (currentPhase !== 'Rest' || currentRound == structureSelected.Rounds) && currentPhase !== 'Training'
+        }">{{'label.training' | translate}}</div>
+      <div [ngClass]="{
+        'sub-time show': (currentPhase === 'Preparation' || (currentPhase === 'Rest' && currentRound < structureSelected.Rounds)),
+        'time-main show': currentPhase === 'Training', 'hidden': currentPhase !== 'Preparation' && (currentPhase !== 'Rest' || currentRound == structureSelected.Rounds) && currentPhase !== 'Training'
+        }">{{trainingTimeMinutes | number: '2.0'}}:{{trainingTimeSeconds | number: '2.0'}}</div>
+      <div [ngClass]="{
+        'sub-status show': currentPhase === 'Training' && currentRound != structureSelected.Rounds,
+        'status show': currentPhase === 'Rest', 'hidden': currentPhase !== 'Rest' && (currentPhase !== 'Training' || currentRound == structureSelected.Rounds)
+        }">{{'label.rest' | translate}}</div>
+      <div [ngClass]="{
+        'sub-time show': currentPhase === 'Training' && currentRound != structureSelected.Rounds,
+        'time-main show': currentPhase === 'Rest', 'hidden': currentPhase !== 'Rest' && (currentPhase !== 'Training' || currentRound == structureSelected.Rounds)
+        }">{{restTimeMinutes | number: '2.0'}}:{{restTimeSeconds | number: '2.0'}}</div>
+      <div [ngClass]="{
+        'sub-status show': currentPhase === 'Training' && currentRound == structureSelected.Rounds && currentSeries != structureSelected.Series,
+        'status show': currentPhase === 'RestBetweenSeries', 'hidden': currentPhase !== 'RestBetweenSeries' && (currentPhase !== 'Training' || currentRound != structureSelected.Rounds || currentSeries == structureSelected.Series)
+        }">{{'label.restBetweenSeries' | translate}}</div>
+      <div [ngClass]="{
+        'sub-time show': currentPhase === 'Training' && currentRound == structureSelected.Rounds && currentSeries != structureSelected.Series,
+        'time-main show': currentPhase === 'RestBetweenSeries', 'hidden': currentPhase !== 'RestBetweenSeries' && (currentPhase !== 'Training' || currentRound != structureSelected.Rounds || currentSeries == structureSelected.Series)
+        }">{{restBetweenSeriesMinutes | number: '2.0'}}:{{restBetweenSeriesSeconds | number: '2.0'}}
+      </div>
+    </div>    
 
     <div class="counters">
-      <div class="rounds">{{structureSelected.Rounds}}</div>
-      <ion-button class="play-button" shape="round" fill="outline" color="warning">
+      <div class="rounds">{{this.currentRound}}/{{structureSelected.Rounds}}</div>
+      <ion-button class="play-button" shape="round" fill="outline" color="warning" (click)="toggleTimer()" [disabled]="isRunning"> 
         <ion-icon name="play-outline"></ion-icon>
       </ion-button>
-      <div class="cycles">{{structureSelected.Series}}</div>
+      <div class="cycles">{{this.currentSeries}}/{{structureSelected.Series}}</div>
     </div>
 
     <div class="labels">
@@ -35,24 +61,3 @@
     </div>
   </div>
 </ion-content>
-
-<ion-footer>
-  <ion-tab-bar>
-    <ion-tab-button tab="tabata">
-      <ion-icon name="timer-outline"></ion-icon>
-      <ion-label>Tabata</ion-label>
-    </ion-tab-button>
-    <ion-tab-button tab="rounds">
-      <ion-icon name="stopwatch-outline"></ion-icon>
-      <ion-label>Rondas</ion-label>
-    </ion-tab-button>
-    <ion-tab-button tab="cronometro">
-      <ion-icon name="time-outline"></ion-icon>
-      <ion-label>Cronómetro</ion-label>
-    </ion-tab-button>
-    <ion-tab-button tab="mas">
-      <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
-      <ion-label>Más</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-footer>

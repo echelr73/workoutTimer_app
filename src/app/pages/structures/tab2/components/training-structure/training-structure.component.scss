@@ -1,18 +1,35 @@
 ion-toolbar {
     text-align: center;
+    --padding-start: 0;
+    --padding-end: 0;
     ion-title {
         font-size: 1.5em;
-        padding-top: 5px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;  
+        top: 5%;
+    }
+    .time-total-header {
+        padding: 5px;
+        text-align: center;
+        font-size: 1.5em;
+        font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        position: absolute;
+        left: 50%;
+        top: 40%;
+        transform: translateX(-50%);
     }
 }
 
-.time-total-header {
-    padding: 5px;
-    text-align: center;
-    background-color: black;
-    font-size: 1.5em;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+.hidden {
+    display: none;
 }
+
+.show {
+    display: block;
+}
+
 
 .timer-container {
     height: 100%;
