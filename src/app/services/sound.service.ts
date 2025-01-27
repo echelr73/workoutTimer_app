@@ -103,6 +103,42 @@ export class SoundService {
     }
   }
 
+  async testSound(sound: string) {
+    try {
+
+      const soundPath = this.soundMap[sound];
+      this.audio = new Audio(soundPath);
+
+      this.audio.volume = 1.0;
+
+      await this.audio.play();
+
+      this.audio.onended = () => {
+        this.audio = null;
+      };
+    } catch (error) {
+      console.error('Error playing sound:', error);
+    }
+
+  }
+
+  async testVolumen(volume: number, sound: string) {
+    try {
+      const soundPath = this.soundMap[sound];
+      this.audio = new Audio(soundPath);
+
+      this.audio.volume = volume / 10;
+
+      await this.audio.play();
+
+      this.audio.onended = () => {
+        this.audio = null;
+      };
+    } catch (error) {
+      console.error('Error playing sound:', error);
+    }
+  }
+
   async playSoundVoice(phase: string) {
     try {
 

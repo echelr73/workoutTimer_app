@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Configuration } from 'src/app/models/configuration';
+import { SoundService } from 'src/app/services/sound.service';
 import { SqlliteManagerService } from 'src/app/services/sqllite-manager.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class ListSettingsComponent  implements OnInit {
   
     constructor(
       private sqliteService: SqlliteManagerService,
+      private soundService: SoundService,
     ) { 
       this.showForm = false;
       this.configuration = [];
@@ -35,6 +37,17 @@ export class ListSettingsComponent  implements OnInit {
 
     getConfiguration() {
       return this.configuration[0];
+    }
+
+    testSound(event: any) {
+      const selectedSound = event.detail.value;
+      this.soundService.testSound(selectedSound);
+    }
+
+    testVolumen(event: any){
+      const selectedVolume = event.detail.value;
+      const selectedSound = this.configuration[0].BeepSoundSelected;
+      this.soundService.testVolumen(selectedVolume, selectedSound);
     }
 
 }
