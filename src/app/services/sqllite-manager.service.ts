@@ -13,6 +13,7 @@ import { Configuration } from '../models/configuration';
 })
 export class SqlliteManagerService {
 
+  public configurationSubject : BehaviorSubject<Configuration>;
   public dbReady: BehaviorSubject<boolean>;
   public isWeb: boolean;
   public dbName: string;
@@ -24,6 +25,7 @@ export class SqlliteManagerService {
     private http: HttpClient,
   ) {
     this.dbReady = new BehaviorSubject<boolean>(false);
+    this.configurationSubject = new BehaviorSubject<Configuration>(null);
     this.isWeb = false;
     this.dbName = '';
   }
@@ -60,69 +62,74 @@ export class SqlliteManagerService {
       this.downloadDatabase();
     } else {
       this.dbName = await this.getDBName();
-      await CapacitorSQLite.createConnection({database: this.dbName, encrypted: false, mode: 'full'});
-      await CapacitorSQLite.open({database: this.dbName});
+      await CapacitorSQLite.createConnection({ database: this.dbName, encrypted: false, mode: 'full' });
+      await CapacitorSQLite.open({ database: this.dbName });
       this.dbReady.next(true);
     }
   }
 
-  downloadDatabase(){
+  downloadDatabase() {
     this.http.get('assets/db/dbTraining.json').subscribe(async (jsonExport: JsonSQLite) => {
       const jsonString = JSON.stringify(jsonExport);
-      const isValid= await CapacitorSQLite.isJsonValid({jsonstring: jsonString});
+      const isValid = await CapacitorSQLite.isJsonValid({ jsonstring: jsonString });
 
-      if (isValid.result){
+      if (isValid.result) {
         this.dbName = jsonExport.database;
-        await CapacitorSQLite.importFromJson({jsonstring: jsonString});
-        await CapacitorSQLite.createConnection({database: this.dbName, encrypted: false, mode: 'full'});
-        await CapacitorSQLite.open({database: this.dbName});
+        await CapacitorSQLite.importFromJson({ jsonstring: jsonString });
+        await CapacitorSQLite.createConnection({ database: this.dbName, encrypted: false, mode: 'full' });
+        await CapacitorSQLite.open({ database: this.dbName });
 
-        await Preferences.set({key: this.DB_SETUP_KEY, value: '1'});
-        await Preferences.set({key: this.DB_NAME_KEY, value: this.dbName});
+        await Preferences.set({ key: this.DB_SETUP_KEY, value: '1' });
+        await Preferences.set({ key: this.DB_NAME_KEY, value: this.dbName });
         this.dbReady.next(true);
       }
 
     });
   }
 
-  async getDBName(){
-    if (!this.dbName){
-      const dbName = await Preferences.get({key: this.DB_NAME_KEY});
+  async getDBName() {
+    if (!this.dbName) {
+      const dbName = await Preferences.get({ key: this.DB_NAME_KEY });
       this.dbName = dbName.value;
     }
     return this.dbName;
   }
 
-  async getConfiguration(){
+  async getConfiguration() {
     let sql = 'SELECT * FROM configuration';
 
     const dbName = await this.getDBName();
     return CapacitorSQLite.query({
-      database: dbName, 
+      database: dbName,
       statement: sql
     }).then((response: capSQLiteValues) => {
 
       let configurations: Configuration[] = [];
-      for (let index = 0; index < response.values.length; index++){
+      for (let index = 0; index < response.values.length; index++) {
         const row = response.values[index];
         let configuration = row as Configuration;
         configurations.push(configuration);
+        this.configurationSubject.next(configuration);
       }
-    
+
       return Promise.resolve(configurations);
     }).catch(error => Promise.reject(error));
   }
 
-  async getStructures(){
+  getConfigurationObservable() {
+    return this.configurationSubject.asObservable();
+  }
+
+  async getStructures() {
     let sql = 'SELECT * FROM trainingStructure';
 
     const dbName = await this.getDBName();
     return CapacitorSQLite.query({
-      database: dbName, 
+      database: dbName,
       statement: sql
     }).then((response: capSQLiteValues) => {
       let structures: Structure[] = [];
-      for (let index = 0; index < response.values.length; index++){
+      for (let index = 0; index < response.values.length; index++) {
         const row = response.values[index];
         let structure = row as Structure;
         structures.push(structure);
@@ -132,57 +139,57 @@ export class SqlliteManagerService {
 
   }
 
-  async createStructure(structure: Structure){ 
+  async createStructure(structure: Structure) {
     const dbName = await this.getDBName();
     let sql = 'INSERT INTO trainingStructure (name, preparationTime, trainingTime, restTime, rounds, series, restBetweenSeries) VALUES (?,?,?,?,?,?,?)';
-    let values = [ structure.Name, structure.PreparationTime, structure.TrainingTime, structure.RestTime, structure.Rounds, structure.Series, structure.RestBetweenSeries];
+    let values = [structure.Name, structure.PreparationTime, structure.TrainingTime, structure.RestTime, structure.Rounds, structure.Series, structure.RestBetweenSeries];
 
     return CapacitorSQLite.executeSet({
       database: dbName,
       set: [
         {
-          statement: sql, 
+          statement: sql,
           values: [
             values
           ]
         }
-      ] 
-      }).then((changes: capSQLiteChanges) => {
-        if (this.isWeb){
-          CapacitorSQLite.saveToStore({
-            database: dbName
-          });
-        }
+      ]
+    }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
       return changes;
     }).catch(error => Promise.reject(error));
   }
 
-  async updateStructure(structure: Structure){
+  async updateStructure(structure: Structure) {
     const dbName = await this.getDBName();
     let sql = 'UPDATE trainingStructure SET name=?, preparationTime=?, trainingTime=?, restTime=?, rounds=?, series=?, restBetweenSeries=? WHERE id=?';
-    let values = [ structure.Name, structure.PreparationTime, structure.TrainingTime, structure.RestTime, structure.Rounds, structure.Series, structure.RestBetweenSeries, structure.Id];
+    let values = [structure.Name, structure.PreparationTime, structure.TrainingTime, structure.RestTime, structure.Rounds, structure.Series, structure.RestBetweenSeries, structure.Id];
 
     return CapacitorSQLite.executeSet({
       database: dbName,
       set: [
         {
-          statement: sql, 
+          statement: sql,
           values: [
             values
           ]
         }
-      ] 
-      }).then((changes: capSQLiteChanges) => {
-        if (this.isWeb){
-          CapacitorSQLite.saveToStore({
-            database: dbName
-          });
-        }
+      ]
+    }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
       return changes;
     }).catch(error => Promise.reject(error));
   }
 
-  async deleteStructure(id: number){
+  async deleteStructure(id: number) {
     const dbName = await this.getDBName();
     let sql = 'DELETE FROM trainingStructure WHERE id=?';
     let values = [id];
@@ -191,12 +198,12 @@ export class SqlliteManagerService {
       database: dbName,
       set: [
         {
-        statement: sql,
-        values: values
-      }
-    ]
+          statement: sql,
+          values: values
+        }
+      ]
     }).then(() => {
-      if (this.isWeb){
+      if (this.isWeb) {
         CapacitorSQLite.saveToStore({
           database: dbName
         });
@@ -204,38 +211,38 @@ export class SqlliteManagerService {
     }).catch(error => Promise.reject(error));
   }
 
-  async updateConfiguration(configuration: Configuration){
+  async updateConfiguration(configuration: Configuration) {
     const dbName = await this.getDBName();
     let sql = 'UPDATE configuration SET beepSounds=?, beepSoundSelected=?, SoundVolume=?, voiceNotification=?, DuckingEffect=? WHERE id=?';
-    let values = [ configuration.BeepSounds, configuration.BeepSoundSelected, configuration.SoundVolume, configuration.VoiceNotification, configuration.DuckingEffect, configuration.Id];
-
+    let values = [configuration.BeepSounds, configuration.BeepSoundSelected, configuration.SoundVolume, configuration.VoiceNotification, configuration.DuckingEffect, configuration.Id];
     return CapacitorSQLite.executeSet({
       database: dbName,
       set: [
         {
-          statement: sql, 
+          statement: sql,
           values: [
             values
           ]
         }
-      ] 
-      }).then((changes: capSQLiteChanges) => {
-        if (this.isWeb){
-          CapacitorSQLite.saveToStore({
-            database: dbName
-          });
-        }
+      ]
+    }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
+      this.configurationSubject.next({ ...configuration} as Configuration);
       return changes;
     }).catch(error => Promise.reject(error));
   }
 
-  async getStructureForId(id: number){
+  async getStructureForId(id: number) {
     const dbName = await this.getDBName();
     let sql = 'SELECT * FROM trainingStructure WHERE id=?';
     let values = id;
 
     return CapacitorSQLite.query({
-      database: dbName, 
+      database: dbName,
       statement: sql,
       values: [values]
     }).then((response: capSQLiteValues) => {

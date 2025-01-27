@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Structure } from 'src/app/models/structure';
+import { SoundService } from 'src/app/services/sound.service';
 import { SqlliteManagerService } from 'src/app/services/sqllite-manager.service';
 
 @Component({
@@ -37,6 +38,7 @@ export class TrainingStructureComponent implements OnInit {
   constructor(
     private sqliteService: SqlliteManagerService,
     private translateService: TranslateService,
+    private soundService: SoundService,
   ) {
     this.structureSelected = new Structure();
     this.totalTime = 0;
@@ -74,17 +76,16 @@ export class TrainingStructureComponent implements OnInit {
 
     const trainingAndRestTimePerRound =
       (this.structureSelected.TrainingTime + this.structureSelected.RestTime) *
-      (this.structureSelected.Rounds - 1); // Entrenamiento y descanso en todas menos la última ronda
+      (this.structureSelected.Rounds - 1);
 
-    const trainingTimeLastRound = this.structureSelected.TrainingTime; // Entrenamiento de la última ronda
+    const trainingTimeLastRound = this.structureSelected.TrainingTime;
 
     const totalSeriesTime =
-      (trainingAndRestTimePerRound + trainingTimeLastRound) * this.structureSelected.Series; // Tiempo total por serie
+      (trainingAndRestTimePerRound + trainingTimeLastRound) * this.structureSelected.Series;
 
     const restBetweenSeriesTime =
-      this.structureSelected.RestBetweenSeries * (this.structureSelected.Series - 1); // Excluye el descanso después de la última serie
+      this.structureSelected.RestBetweenSeries * (this.structureSelected.Series - 1);
 
-    // Total = Preparación + Tiempo total de las series + Tiempos entre series
     this.totalTime = preparationTime + totalSeriesTime + restBetweenSeriesTime;
   }
 
@@ -150,9 +151,12 @@ export class TrainingStructureComponent implements OnInit {
   startPreparationTimer() {
     this.currentPhase = 'Preparation';
     let preparationTime = this.structureSelected.PreparationTime;
+    this.soundService.playSoundVoice(this.currentPhase);
     this.intervalId = setInterval(() => {
-      // Código existente para manejar la cuenta regresiva
       preparationTime--;
+      if (preparationTime <= 3 && preparationTime > 0) {
+        this.soundService.playSoundVoice(`number${preparationTime}`);
+      }
       if (preparationTime < 0)
         this.showTime(0, this.currentPhase);
       else
@@ -166,10 +170,14 @@ export class TrainingStructureComponent implements OnInit {
 
   startTrainingTimer() {
     this.currentPhase = 'Training';
+    this.soundService.playSoundVoice(this.currentPhase);
     let trainingTime = this.structureSelected.TrainingTime;
+    this.soundService.playSound();
     this.intervalId = setInterval(() => {
-      // Código existente para manejar la cuenta regresiva
       trainingTime--;
+      if (trainingTime <= 3 && trainingTime > 0) {
+        this.soundService.playSoundVoice(`number${trainingTime}`);
+      }
       if (trainingTime < 0)
         this.showTime(this.structureSelected.TrainingTime, this.currentPhase);
       else
@@ -192,10 +200,14 @@ export class TrainingStructureComponent implements OnInit {
 
   startRestTimer() {
     this.currentPhase = 'Rest';
+    this.soundService.playSoundVoice(this.currentPhase);
     let restTime = this.structureSelected.RestTime;
+    this.soundService.playSound();
     this.intervalId = setInterval(() => {
-      // Código existente para manejar la cuenta regresiva
       restTime--;
+      if (restTime <= 3 && restTime > 0) {
+        this.soundService.playSoundVoice(`number${restTime}`);
+      }
       if (restTime < 0)
         this.showTime(this.structureSelected.RestTime, this.currentPhase);
       else
@@ -213,10 +225,14 @@ export class TrainingStructureComponent implements OnInit {
 
   startRestBetweenSeriesTimer() {
     this.currentPhase = 'RestBetweenSeries';
+    this.soundService.playSoundVoice(this.currentPhase);
     let restBetweenSeriesTime = this.structureSelected.RestBetweenSeries;
+    this.soundService.playSound();
     this.intervalId = setInterval(() => {
-      // Código existente para manejar la cuenta regresiva
       restBetweenSeriesTime--;
+      if (restBetweenSeriesTime <= 3 && restBetweenSeriesTime > 0) {
+        this.soundService.playSoundVoice(`number${restBetweenSeriesTime}`);
+      }
       if (restBetweenSeriesTime < 0)
         this.showTime(this.structureSelected.RestBetweenSeries, this.currentPhase);
       else
@@ -239,6 +255,5 @@ export class TrainingStructureComponent implements OnInit {
       this.isRunning = false;
     }
   }
-
 
 }
