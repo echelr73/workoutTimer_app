@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Structure } from 'src/app/models/structure';
 import { AlertService } from 'src/app/services/alert.service';
@@ -12,6 +13,7 @@ import { SqlliteManagerService } from 'src/app/services/sqllite-manager.service'
 })
 export class FormStructuresComponent implements OnInit {
 
+  @ViewChild('name', { static: false, read: ElementRef }) name!: ElementRef;
   @Input() structure: Structure;
 
   @Output() closeForm: EventEmitter<boolean>;
@@ -27,13 +29,10 @@ export class FormStructuresComponent implements OnInit {
   public restBetweenSeriesSeconds: number = 0;
   public rounds: number = 1;
   public series: number = 1;
-  minuteSecondsOptions: number[] = Array.from({ length: 60 }, (_, i) => i);
-  roundsSeriesOptions: number[] = Array.from({ length: 99 }, (_, i) => i + 1);
-  selectedMinutes: number = 0;
-  selectedSeconds: number = 0;
-
-
-
+  public minuteSecondsOptions: number[] = Array.from({ length: 60 }, (_, i) => i);
+  public roundsSeriesOptions: number[] = Array.from({ length: 99 }, (_, i) => i + 1);
+  public selectedMinutes: number = 0;
+  public selectedSeconds: number = 0;
 
   constructor(
     private sqliteService: SqlliteManagerService,
@@ -62,15 +61,32 @@ export class FormStructuresComponent implements OnInit {
     this.closeForm.emit(true);
   }
 
-  createUpdateStructure() {
+  createUpdateStructure(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
     if (this.update) {
-      this.updateStructure();
+      this.updateStructure(form);
     } else {
-      this.createStructure();
+      this.createStructure(form);
     }
   }
 
-  createStructure() {
+  createStructure(form: NgForm) {
+    if (!this.structure.Name || this.structure.Name.trim() === '') {
+      form.form.controls['name'].setErrors({ required: true });
+      this.alertService.alertMessage(
+        this.translateService.instant('label.error'),
+        this.translateService.instant('label.error.message.form.invalid')
+      );
+      setTimeout(() => {
+        if (this.name) {
+          this.name.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          this.name.nativeElement.focus();
+        }
+      }, 200);
+      return;
+    }
     this.getTotalSeconds();
     this.sqliteService.createStructure(this.structure).then(() => {
       this.alertService.alertMessage(
@@ -86,7 +102,21 @@ export class FormStructuresComponent implements OnInit {
     });
   }
 
-  updateStructure() {
+  updateStructure(form: NgForm) {
+    if (!this.structure.Name || this.structure.Name.trim() === '') {
+      form.form.controls['name'].setErrors({ required: true });
+      this.alertService.alertMessage(
+        this.translateService.instant('label.error'),
+        this.translateService.instant('label.error.message.form.invalid')
+      );
+      setTimeout(() => {
+        if (this.name) {
+          this.name.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          this.name.nativeElement.focus();
+        }
+      }, 200);
+      return;
+    }
     this.getTotalSeconds();
     this.sqliteService.updateStructure(this.structure).then(() => {
       this.alertService.alertMessage(
@@ -104,6 +134,7 @@ export class FormStructuresComponent implements OnInit {
   }
 
   getTotalSeconds() {
+    this.structure.Name = this.structure.Name.trim();
     this.structure.PreparationTime = this.preparationTimeMinutes * 60 + this.preparationTimeSeconds;
     this.structure.TrainingTime = this.trainingTimeMinutes * 60 + this.trainingTimeSeconds;
     this.structure.RestTime = this.restTimeMinutes * 60 + this.restTimeSeconds;

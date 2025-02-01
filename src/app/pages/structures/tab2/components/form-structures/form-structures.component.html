@@ -1,7 +1,7 @@
-<form action="" (ngSubmit)="createUpdateStructure()">
-  <ion-item>
+<form #form="ngForm" action="" (ngSubmit)="createUpdateStructure(form)" novalidate>
+  <ion-item [class.input-invalid]="(nameInput.invalid && nameInput.touched)">
     <ion-input [label]="'label.structure.name' | translate" [(ngModel)]="structure.Name" required type="text"
-      name="name"></ion-input>
+      name="name" #nameInput="ngModel" #name></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>{{'label.structure.preparationTime' | translate}}</ion-label>
@@ -38,7 +38,7 @@
         <ion-button expand="block" type="button" (click)="closeFormEmit()">{{'label.back' | translate}}</ion-button>
       </ion-col>
       <ion-col size="6">
-        <ion-button expand="block" type="submit">{{(update ? 'label.edit.structure' : 'label.add.structure') | translate}}</ion-button>
+        <ion-button expand="block" type="submit" [disabled]="form.invalid">{{(update ? 'label.edit.structure' : 'label.add.structure') | translate}}</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

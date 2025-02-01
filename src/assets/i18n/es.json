@@ -10,6 +10,7 @@
     "label.save": "Guardar",
     "label.success.message.add.structure": "¡Estructura de entrenamiento añadida!",
     "label.error.message.add.structure": "Error al añadir la estructura de entrenamiento",
+    "label.error.message.form.invalid": "Algun dato es incorrecto",
     "label.success.message.edit.structure": "¡Estructura de entrenamiento modificada!",
     "label.error.message.edit.structure": "Error al actualizar la estructura de entrenamiento",
     "label.success.message.remove.structure": "¡Estructura de entrenamiento eliminada!",
@@ -45,6 +46,7 @@
     "label.confirm": "Confirmar",
     "label.confirm.message.structure": "¿Estas seguro de que quieres borrar la estructura de entrenamiento?",
     "label.confirm.message.configuration": "¿Estas seguro de que quieres actualizar la configuración?",
+    "label.confirm.message.reset": "¿Estas seguro de que quieres resetear el contador?",
     "label.hide.filters": "Ocultar filtros",
     "label.show.filters": "Mostrar filtros",
     "label.filter": "Filtrar",
@@ -70,7 +72,5 @@
     "label.rest": "DESCANSAR:",
     "label.restBetweenSeries": "DESCANSAR E/S:",
     "label.roundsRemaining": "RONDAS RESTANTES",
-    "label.seriesRemaining": "SERIES RESTANTES"
-
-    
+    "label.seriesRemaining": "SERIES RESTANTES"   
 }

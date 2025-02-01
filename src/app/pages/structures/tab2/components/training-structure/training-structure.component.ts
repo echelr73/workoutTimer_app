@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Structure } from 'src/app/models/structure';
+import { AlertService } from 'src/app/services/alert.service';
 import { SoundService } from 'src/app/services/sound.service';
 import { SqlliteManagerService } from 'src/app/services/sqllite-manager.service';
 
@@ -39,6 +40,7 @@ export class TrainingStructureComponent implements OnInit {
     private sqliteService: SqlliteManagerService,
     private translateService: TranslateService,
     private soundService: SoundService,
+    private alertService: AlertService
   ) {
     this.structureSelected = new Structure();
     this.totalTime = 0;
@@ -54,9 +56,22 @@ export class TrainingStructureComponent implements OnInit {
 
   }
 
+  resetStructureButton() {
+    this.alertService.alertConfirm(
+      this.translateService.instant('label.confirm'),
+      this.translateService.instant('label.confirm.message.reset'),
+      () => {
+        this.resetStructure();
+      }
+    );
+  }
+
   resetStructure() {
+    clearInterval(this.intervalId);
     this.currentPhase = 'Preparation';
     this.isRunning = false;
+    this.currentRound = 0;
+    this.currentSeries = 0;
     this.getTrainingStructure(this.structureId);
   }
 
@@ -141,7 +156,6 @@ export class TrainingStructureComponent implements OnInit {
     }
   }
 
-
   startTimers() {
     this.currentRound = 1;
     this.currentSeries = 1;
@@ -153,18 +167,19 @@ export class TrainingStructureComponent implements OnInit {
     let preparationTime = this.structureSelected.PreparationTime;
     this.soundService.playSoundVoice(this.currentPhase);
     this.intervalId = setInterval(() => {
+      if (preparationTime === 0) {
+        clearInterval(this.intervalId);
+        this.showTime(0, this.currentPhase);
+        this.startTrainingTimer();
+        return;
+      }
       preparationTime--;
+      this.totalTime--;
+      this.formatTotalTime(this.totalTime);
       if (preparationTime <= 3 && preparationTime > 0) {
         this.soundService.playSoundVoice(`number${preparationTime}`);
       }
-      if (preparationTime < 0)
-        this.showTime(0, this.currentPhase);
-      else
-        this.showTime(preparationTime, this.currentPhase);
-      if (preparationTime < 0) {
-        clearInterval(this.intervalId);
-        this.startTrainingTimer();
-      }
+      this.showTime(preparationTime, this.currentPhase);
     }, 1000);
   }
 
@@ -174,27 +189,31 @@ export class TrainingStructureComponent implements OnInit {
     let trainingTime = this.structureSelected.TrainingTime;
     this.soundService.playSound();
     this.intervalId = setInterval(() => {
+      if (trainingTime === 0) {
+        clearInterval(this.intervalId);
+        this.showTime(0, this.currentPhase);
+
+        if (this.currentRound < this.structureSelected.Rounds) {
+          this.startRestTimer();
+        } else if (this.currentSeries !== this.structureSelected.Series) {
+          this.startRestBetweenSeriesTimer();
+        } else {
+          this.currentSeries = 0;
+          this.currentRound = 0;
+          this.currentPhase = '';
+          this.resetStructure();
+        }
+        return;
+      }
+
       trainingTime--;
+      this.totalTime--;
+      this.formatTotalTime(this.totalTime);
       if (trainingTime <= 3 && trainingTime > 0) {
         this.soundService.playSoundVoice(`number${trainingTime}`);
       }
-      if (trainingTime < 0)
-        this.showTime(this.structureSelected.TrainingTime, this.currentPhase);
-      else
-        this.showTime(trainingTime, this.currentPhase);
-      if (trainingTime < 0 && this.currentRound < this.structureSelected.Rounds) {
-        clearInterval(this.intervalId);
-        this.startRestTimer();
-      } else if (trainingTime < 0 && this.currentRound === this.structureSelected.Rounds && this.currentSeries != this.structureSelected.Series) {
-        clearInterval(this.intervalId);
-        this.startRestBetweenSeriesTimer();
-      } else if (trainingTime < 0 && this.currentRound === this.structureSelected.Rounds && this.currentSeries === this.structureSelected.Series) {
-        clearInterval(this.intervalId);
-        this.currentSeries = 0;
-        this.currentRound = 0;
-        this.currentPhase = '';
-        this.resetStructure();
-      }
+      this.showTime(trainingTime, this.currentPhase);
+
     }, 1000);
   }
 
@@ -204,21 +223,27 @@ export class TrainingStructureComponent implements OnInit {
     let restTime = this.structureSelected.RestTime;
     this.soundService.playSound();
     this.intervalId = setInterval(() => {
-      restTime--;
-      if (restTime <= 3 && restTime > 0) {
-        this.soundService.playSoundVoice(`number${restTime}`);
-      }
-      if (restTime < 0)
-        this.showTime(this.structureSelected.RestTime, this.currentPhase);
-      else
+      if (restTime > 0) {
+        restTime--;
+        this.totalTime--;
+        this.formatTotalTime(this.totalTime);
         this.showTime(restTime, this.currentPhase);
-      if (restTime < 0 && this.currentRound < this.structureSelected.Rounds) {
+
+        if (restTime <= 3) {
+          this.soundService.playSoundVoice(`number${restTime}`);
+        }
+      }
+
+      if (restTime === 0) {
         clearInterval(this.intervalId);
-        this.currentRound++;
-        this.startTrainingTimer();
-      } else if (restTime < 0 && this.currentRound === this.structureSelected.Rounds) {
-        clearInterval(this.intervalId);
-        this.startRestBetweenSeriesTimer();
+        this.showTime(0, this.currentPhase);
+
+        if (this.currentRound < this.structureSelected.Rounds) {
+          this.currentRound++;
+          this.startTrainingTimer();
+        } else {
+          this.startRestBetweenSeriesTimer();
+        }
       }
     }, 1000);
   }
@@ -229,19 +254,26 @@ export class TrainingStructureComponent implements OnInit {
     let restBetweenSeriesTime = this.structureSelected.RestBetweenSeries;
     this.soundService.playSound();
     this.intervalId = setInterval(() => {
-      restBetweenSeriesTime--;
-      if (restBetweenSeriesTime <= 3 && restBetweenSeriesTime > 0) {
-        this.soundService.playSoundVoice(`number${restBetweenSeriesTime}`);
-      }
-      if (restBetweenSeriesTime < 0)
-        this.showTime(this.structureSelected.RestBetweenSeries, this.currentPhase);
-      else
+      if (restBetweenSeriesTime > 0) {
+        restBetweenSeriesTime--;
+        this.totalTime--;
+        this.formatTotalTime(this.totalTime);
         this.showTime(restBetweenSeriesTime, this.currentPhase);
-      if (restBetweenSeriesTime < 0 && this.currentSeries < this.structureSelected.Series) {
+
+        if (restBetweenSeriesTime <= 3) {
+          this.soundService.playSoundVoice(`number${restBetweenSeriesTime}`);
+        }
+      }
+
+      if (restBetweenSeriesTime === 0) {
         clearInterval(this.intervalId);
-        this.currentSeries++;
-        this.currentRound = 1;
-        this.startTrainingTimer();
+        this.showTime(0, this.currentPhase);
+
+        if (this.currentSeries < this.structureSelected.Series) {
+          this.currentSeries++;
+          this.currentRound = 1;
+          this.startTrainingTimer();
+        }
       }
     }, 1000);
   }
