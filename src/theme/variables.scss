@@ -37,6 +37,14 @@
     border-radius: 8px;
     padding: 16px;
   }
+
+  ion-item, ion-list, ion-picker, .list-md {
+    --background: var(--card-background);
+    --color: var(--text-primary);
+    background: var(--card-background);
+    color: var(--text-primary);
+    border-radius: 1%;
+  }
   
   ion-button {
     --background: var(--button-primary);
