@@ -71,6 +71,6 @@
     "label.training": "ENTRENAR:",
     "label.rest": "DESCANSAR:",
     "label.restBetweenSeries": "DESCANSAR E/S:",
-    "label.roundsRemaining": "RONDAS RESTANTES",
-    "label.seriesRemaining": "SERIES RESTANTES"   
+    "label.roundsRemaining": "RONDAS",
+    "label.seriesRemaining": "SERIES"   
 }

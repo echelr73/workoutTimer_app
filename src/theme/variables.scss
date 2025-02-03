@@ -1,2 +1,51 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+// Dark Theme Variables
+:root {
+    --background-color: #121212;
+    --card-background: #1E1E1E;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0B0B0;
+    --button-primary: #0A84FF;
+    --button-secondary: #1B72E8;
+    --border-color: #2C2C2C;
+    --font-primary: 'Inter', sans-serif;
+  }
+  
+  // Aplicar a toda la app
+  body {
+    background-color: var(--background-color);
+    font-family: var(--font-primary);
+    color: var(--text-primary);
+  }
+  
+  ion-header, ion-toolbar, ion-tab-bar {
+    --background: var(--background-color);
+    background: var(--background-color);
+    color: var(--text-primary);
+    --color: var(--text-primary);
+    font-family: var(--font-primary);
+  }
+  
+  ion-content {
+    --background: var(--background-color);
+  }
+  
+  ion-card {
+    background: var(--card-background);
+    color: var(--text-primary);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  
+  ion-button {
+    --background: var(--button-primary);
+    --color: var(--text-primary);
+  }
+  
+  ion-button.outline {
+    --background: transparent;
+    --color: var(--button-primary);
+    border: 2px solid var(--button-primary);
+  }
+  

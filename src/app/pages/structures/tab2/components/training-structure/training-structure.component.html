@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar>
     <ion-title>{{structureSelected.Name}}</ion-title>
     <div class="time-total-header">
       <div class="status">{{totalTimeMinutes | number: '2.0'}}:{{totalTimeSeconds | number: '2.0'}}</div>
@@ -48,8 +48,8 @@
 
     <div class="counters">
       <div class="rounds">{{this.currentRound}}/{{structureSelected.Rounds}}</div>
-      <ion-button class="play-button" shape="round" fill="outline" color="warning" (click)="toggleTimer()" [disabled]="isRunning"> 
-        <ion-icon name="play-outline"></ion-icon>
+      <ion-button class="play-button" shape="round" fill="outline" (click)="toggleTimer()" [disabled]="isRunning"> 
+        <ion-icon name="play"></ion-icon>
       </ion-button>
       <div class="cycles">{{this.currentSeries}}/{{structureSelected.Series}}</div>
     </div>

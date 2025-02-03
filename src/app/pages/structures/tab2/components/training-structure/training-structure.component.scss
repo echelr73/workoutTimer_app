@@ -1,5 +1,15 @@
+// Palette
+$background-color: #121212;
+$card-background: #1E1E1E;
+$text-primary: #FFFFFF;
+$text-secondary: #B0B0B0;
+$button-primary: #0A84FF;
+$button-secondary: #1B72E8;
+$border-color: #2C2C2C;
+
 ion-toolbar {
     text-align: center;
+    text-transform: uppercase;
     --padding-start: 0;
     --padding-end: 0;
     ion-title {
@@ -34,9 +44,10 @@ ion-toolbar {
 .timer-container {
     height: 100%;
     text-align: center;
-    color: black;
-    background-color: yellow;
+    color: $text-primary;
+    background-color: $button-primary;
     padding: 10px;
+    text-shadow: $background-color 1px 1px 1px;
 
     .time-display {
 
@@ -63,12 +74,12 @@ ion-toolbar {
         justify-content: space-between;
         align-items: center;
         padding: 10px;
-        background-color: black;
+        background-color: $background-color;
 
         .rounds,
         .cycles {
             font-size: 4em;
-            color: #1E90FF;
+            color: $button-primary;
             padding-left: 20px;
             padding-right: 20px;
             font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
@@ -82,9 +93,10 @@ ion-toolbar {
     .labels {
         display: flex;
         justify-content: space-between;
-        padding: 5px;
-        color: yellow;
-        background-color: black;
+        padding: 1% 12%;
+        text-transform: uppercase;
+        font-weight: bold;
+        background-color: $background-color;
         font-size: 0.8em;
         width: 100%;
     }
