@@ -7,6 +7,9 @@
       <ion-button (click)="viewStructures()" *ngIf="!showStructures">
         <ion-icon name="swap-vertical-outline"></ion-icon>
       </ion-button>
+      <ion-button (click)="viewStructures()" *ngIf="showStructures">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

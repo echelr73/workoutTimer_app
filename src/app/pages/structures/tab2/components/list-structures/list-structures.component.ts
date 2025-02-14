@@ -44,9 +44,11 @@ export class ListStructuresComponent implements OnInit {
   }
 
   getStructures() {
-    this.sqliteService.getStructures().then((data) => {
-      this.structures = data;
-    });
+    Promise.all([
+    this.sqliteService.getStructures()]).then(data => {
+      this.structures = data[0];
+    })
+
   }
 
   convertToMinutesAndSeconds(totalSeconds: number): string {
