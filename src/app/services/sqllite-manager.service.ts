@@ -101,7 +101,8 @@ export class SqlliteManagerService {
     const dbName = await this.getDBName();
     return CapacitorSQLite.query({
       database: dbName,
-      statement: sql
+      statement: sql,
+      values: []
     }).then((response: capSQLiteValues) => {
 
       let configurations: Configuration[] = [];
@@ -126,7 +127,8 @@ export class SqlliteManagerService {
     const dbName = await this.getDBName();
     return CapacitorSQLite.query({
       database: dbName,
-      statement: sql
+      statement: sql,
+      values: []
     }).then((response: capSQLiteValues) => {
       let structures: Structure[] = [];
       for (let index = 0; index < response.values.length; index++) {
