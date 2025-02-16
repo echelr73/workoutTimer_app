@@ -23,8 +23,9 @@ export class ListSettingsComponent  implements OnInit {
     }
   
     ngOnInit() {
-      this.sqliteService.getConfiguration().then((data) => {
-        this.configuration = data;
+      Promise.all([
+      this.sqliteService.getConfiguration()]).then((data) => {
+        this.configuration = data[0];
       });
     }
 
