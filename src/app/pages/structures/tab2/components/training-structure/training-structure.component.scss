@@ -46,7 +46,7 @@ ion-toolbar {
     text-align: center;
     color: $text-primary;
     background-color: $button-primary;
-    padding: 10px;
+    padding-top: 10px;
     text-shadow: $background-color 1px 1px 1px;
 
     .time-display {
@@ -73,7 +73,6 @@ ion-toolbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px;
         background-color: $background-color;
 
         .rounds,

@@ -7,12 +7,12 @@
             [showAdd]="false">
             <ng-template #templateData let-item="item">
               <ion-list>
-                <ion-item>
+                <ion-item lines="full">
                   <ion-toggle justify="space-between" color="success"
                     [(ngModel)]="configuration[0].BeepSounds">{{'label.settings.beepSound' |
                     translate}}</ion-toggle>
                 </ion-item>
-                <ion-item>
+                <ion-item lines="full">
                   <ion-select class="always-flip" toggleIcon="caret-down-sharp" interface="popover"
                     label="{{'label.settings.beepSoundSelected' | translate}}"
                     [(ngModel)]="configuration[0].BeepSoundSelected" (ionChange)="this.testSound($event)">
@@ -29,7 +29,7 @@
                     <ion-select-option value="microwaveTimer">Microwave Timer</ion-select-option>
                   </ion-select>
                 </ion-item>
-                <ion-item>
+                <ion-item lines="full">
                   <ion-range labelPlacement="start" label="{{'label.settings.soundVolume' | translate}}" color="success"
                     [(ngModel)]="configuration[0].SoundVolume" [pin]="true" [pinFormatter]="pinFormatter" [ticks]="true"
                     [snaps]="true" [min]="0" [max]="10" (ionChange)="this.testVolumen($event)">
@@ -37,12 +37,12 @@
                     <ion-icon slot="end" name="volume-high-outline"></ion-icon>
                   </ion-range>
                 </ion-item>
-                <ion-item>
+                <ion-item lines="full">
                   <ion-toggle justify="space-between" color="success"
                     [(ngModel)]="configuration[0].VoiceNotification">{{'label.settings.voiceNotification' |
                     translate}}</ion-toggle>
                 </ion-item>
-                <ion-item>
+                <ion-item lines="full">
                   <ion-toggle justify="space-between" color="success"
                     [(ngModel)]="configuration[0].DuckingEffect">{{'label.settings.duckingEffect' |
                     translate}}</ion-toggle>
@@ -54,8 +54,5 @@
         </ion-col>
       </ion-row>
     </ion-col>
-    <!--     <ion-col *ngIf="showForm">
-
-    </ion-col> -->
   </ion-row>
 </ion-grid>

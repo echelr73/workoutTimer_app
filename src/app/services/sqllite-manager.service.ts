@@ -151,9 +151,7 @@ export class SqlliteManagerService {
       set: [
         {
           statement: sql,
-          values: [
-            values
-          ]
+          values: values
         }
       ]
     }).then((changes: capSQLiteChanges) => {
@@ -176,9 +174,7 @@ export class SqlliteManagerService {
       set: [
         {
           statement: sql,
-          values: [
-            values
-          ]
+          values: values
         }
       ]
     }).then((changes: capSQLiteChanges) => {
@@ -222,9 +218,7 @@ export class SqlliteManagerService {
       set: [
         {
           statement: sql,
-          values: [
-            values
-          ]
+          values: values
         }
       ]
     }).then((changes: capSQLiteChanges) => {

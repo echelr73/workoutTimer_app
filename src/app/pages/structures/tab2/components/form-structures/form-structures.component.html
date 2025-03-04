@@ -1,32 +1,32 @@
 <form #form="ngForm" action="" (ngSubmit)="createUpdateStructure(form)" novalidate>
-  <ion-item [class.input-invalid]="(nameInput.invalid && nameInput.touched)">
+  <ion-item [class.input-invalid]="(nameInput.invalid && nameInput.touched)" lines="full">
     <ion-input [label]="'label.structure.name' | translate" [(ngModel)]="structure.Name" required type="text"
       name="name" #nameInput="ngModel" #name></ion-input>
   </ion-item>
-  <ion-item>
+  <ion-item lines="full">
     <ion-label>{{'label.structure.preparationTime' | translate}}</ion-label>
     <app-custom-picker [(ngModel)]="preparationTimeMinutes" [options]="minuteSecondsOptions" name="preparationTimeMinutes"></app-custom-picker>
     <app-custom-picker [(ngModel)]="preparationTimeSeconds" [options]="minuteSecondsOptions" name="preparationTimeSeconds"></app-custom-picker>
   </ion-item>
-  <ion-item>
+  <ion-item lines="full">
     <ion-label>{{'label.structure.trainingTime' | translate}}</ion-label>
     <app-custom-picker [(ngModel)]="trainingTimeMinutes" [options]="minuteSecondsOptions" name="trainingTimeMinutes"></app-custom-picker>
     <app-custom-picker [(ngModel)]="trainingTimeSeconds" [options]="minuteSecondsOptions" name="trainingTimeSeconds"></app-custom-picker>
   </ion-item>
-  <ion-item>
+  <ion-item lines="full">
     <ion-label>{{'label.structure.restTime' | translate}}</ion-label>
     <app-custom-picker [(ngModel)]="restTimeMinutes" [options]="minuteSecondsOptions" name="restTimeMinutes"></app-custom-picker>
     <app-custom-picker [(ngModel)]="restTimeSeconds" [options]="minuteSecondsOptions" name="restTimeSeconds"></app-custom-picker>
   </ion-item>
-  <ion-item>
+  <ion-item lines="full">
     <ion-label>{{'label.structure.rounds' | translate}}</ion-label>
     <app-custom-picker [(ngModel)]="structure.Rounds" [options]="roundsSeriesOptions" name="rounds"></app-custom-picker>
   </ion-item>
-  <ion-item>
+  <ion-item lines="full">
     <ion-label>{{'label.structure.series' | translate}}</ion-label>
     <app-custom-picker [(ngModel)]="structure.Series" [options]="roundsSeriesOptions" name="series"></app-custom-picker>
   </ion-item>
-  <ion-item>
+  <ion-item lines="full">
     <ion-label>{{'label.structure.restBetweenSeries' | translate}}</ion-label>
     <app-custom-picker [(ngModel)]="restBetweenSeriesMinutes" [options]="minuteSecondsOptions" name="restBetweenSeriesMinutes"></app-custom-picker>
     <app-custom-picker [(ngModel)]="restBetweenSeriesSeconds" [options]="minuteSecondsOptions" name="restBetweenSeriesSeconds"></app-custom-picker>

@@ -1,6 +1,6 @@
 <ion-row *ngIf="showAdd">
   <ion-col>
-    <ion-item (click)="addData()">
+    <ion-item (click)="addData()" lines="none">
       <ion-label *ngIf="addText">{{addText | translate}}</ion-label>
       <ion-icon name="add-circle-outline"></ion-icon>
     </ion-item>
