@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
     <ion-picker (ionChange)="onPickerChange($event)">
       <ion-picker-column [value]="this.value">
         <ion-picker-column-option *ngFor="let option of options" [value]="option">{{ formatOption(option) }}</ion-picker-column-option>
-        <div slot="suffix">{{ getSuffix() }}</div>      
+        <div class="suffix" slot="suffix">{{ getSuffix() }}</div>      
       </ion-picker-column>
     </ion-picker>
   `,

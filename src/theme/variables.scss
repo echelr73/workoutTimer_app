@@ -38,12 +38,39 @@
     padding: 16px;
   }
 
-  ion-item, ion-list, ion-picker, .list-md {
+  ion-item, ion-list, .list-md {
     --background: var(--card-background);
     --color: var(--text-primary);
     background: var(--card-background);
     color: var(--text-primary);
     border-radius: 1%;
+  }
+
+  ion-picker {
+    --highlight-border-radius: 1%;
+    --fade-background-rgb: black; 
+    --color: var(--background-color);
+    color: var(--background-color);
+    border-radius: 1%;
+  }
+
+  .suffix {
+    color: blue;
+    font-size: 0.8em;
+    padding: 10px;
+  }
+
+  .item-picker{
+    height: 18vh;
+    display: flex;
+  }
+
+  .item.sc-ion-label-md-h, .item .sc-ion-label-md-h{
+    font-size: 0.8em;
+  }
+
+  .item.short.sc-ion-label-md-h, .item .short.sc-ion-label-md-h{
+    font-size: 1.2em;
   }
   
   ion-button {
