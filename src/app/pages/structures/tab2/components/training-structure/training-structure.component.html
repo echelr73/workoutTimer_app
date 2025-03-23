@@ -1,4 +1,4 @@
-<ion-header>
+<ion-content>
   <ion-toolbar>
     <ion-title>{{structureSelected.Name}}</ion-title>
     <div class="time-total-header">
@@ -10,9 +10,6 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-header>
-
-<ion-content>
   <div class="timer-container">
     <div class="time-display">
       <div [ngClass]="{'status show': currentPhase === 'Preparation', 'hidden': currentPhase !== 'Preparation'}">{{'label.preparation' | translate}}</div>

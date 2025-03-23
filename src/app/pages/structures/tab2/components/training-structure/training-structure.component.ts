@@ -199,10 +199,15 @@ export class TrainingStructureComponent implements OnInit {
         } else if (this.currentSeries !== this.structureSelected.Series) {
           this.startRestBetweenSeriesTimer();
         } else {
+          this.soundService.playSound();
           this.currentSeries = 0;
           this.currentRound = 0;
           this.currentPhase = '';
           this.resetStructure();
+          this.alertService.alertMessage(
+            this.translateService.instant('label.finish'),
+            this.translateService.instant('label.finish.message')
+          );
         }
         return;
       }
