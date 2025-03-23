@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Structure } from 'src/app/models/structure';
 import { AlertService } from 'src/app/services/alert.service';
@@ -14,6 +14,7 @@ import { SqlliteManagerService } from 'src/app/services/sqllite-manager.service'
 export class TrainingStructureComponent implements OnInit {
 
   @Input() structureId: number;
+  @Output() isRunningTimer = new EventEmitter<boolean>();
   public structureSelected: Structure;
   public totalTime: number;
   public totalTimeMinutes: number;
@@ -53,7 +54,6 @@ export class TrainingStructureComponent implements OnInit {
 
   ngOnInit() {
     this.getTrainingStructure(this.structureId);
-
   }
 
   resetStructureButton() {
@@ -70,6 +70,7 @@ export class TrainingStructureComponent implements OnInit {
     clearInterval(this.intervalId);
     this.currentPhase = 'Preparation';
     this.isRunning = false;
+    this.isRunningTimer.emit(this.isRunning);
     this.currentRound = 0;
     this.currentSeries = 0;
     this.getTrainingStructure(this.structureId);
@@ -279,12 +280,11 @@ export class TrainingStructureComponent implements OnInit {
   }
 
   toggleTimer() {
-    if (!this.isRunning) {
-      this.isRunning = true;
+    this.isRunning = !this.isRunning;  
+    this.isRunningTimer.emit(this.isRunning);
+  
+    if (this.isRunning) {
       this.startTimers();
-    }
-    else {
-      this.isRunning = false;
     }
   }
 

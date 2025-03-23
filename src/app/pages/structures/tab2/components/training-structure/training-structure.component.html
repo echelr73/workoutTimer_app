@@ -5,7 +5,7 @@
       <div class="status">{{totalTimeMinutes | number: '2.0'}}:{{totalTimeSeconds | number: '2.0'}}</div>
     </div>
     <ion-buttons slot="end">
-      <ion-button (click)="resetStructureButton()">
+      <ion-button (click)="resetStructureButton()" [disabled]="!isRunning">
         <ion-icon name="refresh-outline"></ion-icon>
       </ion-button>
     </ion-buttons>

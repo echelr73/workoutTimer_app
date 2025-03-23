@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 export class Tab2Page {
   public showStructures = false;
   public structureId = 1;
+  public isRunningTimer = false;
 
 
   constructor() {}
@@ -20,6 +21,10 @@ export class Tab2Page {
   onItemSelected(id: number) {
     this.showStructures = false;
     this.structureId = id;
+  }
+
+  onRunningTimer(isRunning: boolean) { 
+    this.isRunningTimer = isRunning;
   }
 
 }

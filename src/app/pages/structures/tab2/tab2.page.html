@@ -4,7 +4,7 @@
       {{'label.structure' | translate}}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="viewStructures()" *ngIf="!showStructures">
+      <ion-button (click)="viewStructures()" *ngIf="!showStructures" [disabled]="isRunningTimer">
         <ion-icon name="swap-vertical-outline"></ion-icon>
       </ion-button>
       <ion-button (click)="viewStructures()" *ngIf="showStructures">
@@ -15,6 +15,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <app-training-structure *ngIf="!showStructures" [structureId]="structureId"></app-training-structure>
+  <app-training-structure *ngIf="!showStructures" [structureId]="structureId" (isRunningTimer)="onRunningTimer($event)"></app-training-structure>
   <app-list-structures *ngIf="showStructures" (itemSelected)="onItemSelected($event)"></app-list-structures>
 </ion-content>
