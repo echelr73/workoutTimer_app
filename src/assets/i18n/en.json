@@ -66,7 +66,7 @@
     "label.settings.soundVolume": "Volume:",
     "label.settings.voiceNotification": "Voice notification:",
     "label.settings.duckingEffect": "Ducking effect:",
-    "label.settings.unsaved": "You haven't saved the changes",
+    "label.settings.unsaved": "You haven’t saved your changes. Do you want to return to the settings?",
     "label.db.info": "Info",
     "label.db.info.message": "Database ready",
     "label.preparation": "PREPARATION:",
