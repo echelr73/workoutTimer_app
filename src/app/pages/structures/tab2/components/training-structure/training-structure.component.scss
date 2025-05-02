@@ -72,12 +72,12 @@ ion-toolbar {
         .time-main {
             font-size: 15vh;
             font-weight: bold;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            //font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
 
         .sub-time {
             font-size: 10vh;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            //font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
     }
 
@@ -91,8 +91,8 @@ ion-toolbar {
         .cycles {
             font-size: 4em;
             color: $button-primary;
-            padding: 0 8%;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            padding: 0 6%;
+            //font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
 
         .play-button {
@@ -103,7 +103,7 @@ ion-toolbar {
     .labels {
         display: flex;
         justify-content: space-between;
-        padding: 1% 12%;
+        padding: 1% 10%;
         text-transform: uppercase;
         font-weight: bold;
         background-color: $background-color;
@@ -114,27 +114,30 @@ ion-toolbar {
 
 @media screen and (min-width: 1150px) {
     ion-toolbar {
-        --min-height: 10vh;
+        --min-height: 9vh;
 
         .time-total-header {
-            font-size: 4vh;
+            font-size: 3.5vh;
         }
 
         ion-button {
-            font-size: 2.5vh;
+            font-size: 3vh;
         }
     }
 
     .timer-container {
         .time-display {
 
-            .status,
-            .sub-status {
+            .status {
                 font-size: 6vh;
             }
 
+            .sub-status {
+                font-size: 4vh;
+            }
+
             .time-main {
-                font-size: 20vh;
+                font-size: 22vh;
             }
 
             .sub-time {

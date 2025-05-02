@@ -1,8 +1,17 @@
+ion-button {
+    font-size: 1.5vh;
+}
+
 @media screen and (min-width: 1150px) {
-    ion-title {
-        font-size: 2vw;
-    }
-    ion-button{
-        font-size: 1.5vw;
+    ion-toolbar {
+        --min-height: 2vh;
+
+        ion-title {
+            font-size: 3vh;
+        }
+
+        ion-button {
+            font-size: 2.5vh;
+        }
     }
 }
