@@ -1,9 +1,11 @@
 <ion-content>
   <ion-toolbar>
-    <ion-title>{{structureSelected.Name}}</ion-title>
-    <div class="time-total-header">
-      <div class="status">{{totalTimeMinutes | number: '2.0'}}:{{totalTimeSeconds | number: '2.0'}}</div>
-    </div>
+    <ion-title>
+      <div class="time-total-header">
+        <div>{{structureSelected.Name}}</div>
+        <div>{{totalTimeMinutes | number: '2.0'}}:{{totalTimeSeconds | number: '2.0'}}</div>
+      </div>
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="resetStructureButton()" [disabled]="!isRunning">
         <ion-icon name="refresh-outline"></ion-icon>

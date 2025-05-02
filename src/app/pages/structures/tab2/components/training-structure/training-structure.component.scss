@@ -12,23 +12,32 @@ ion-toolbar {
     text-transform: uppercase;
     --padding-start: 0;
     --padding-end: 0;
+    --min-height: 8vh;
+
     ion-title {
-        font-size: 1.5em;
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        text-align: center;  
+        text-align: center;
         top: 5%;
     }
+
     .time-total-header {
-        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-align: center;
-        font-size: 1.5em;
-        font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        font-size: 3vh;
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         position: absolute;
         left: 50%;
         top: 40%;
         transform: translateX(-50%);
+    }
+
+    ion-button{
+        font-size: 1.5vh;
     }
 }
 
@@ -47,27 +56,28 @@ ion-toolbar {
     width: 100%;
     text-align: center;
     color: $text-primary;
-    background-color: $button-primary;
     padding-top: 10px;
     text-shadow: $background-color 1px 1px 1px;
 
     .time-display {
+        background-color: $button-primary;
+        padding-top: 1vh;
 
         .status,
         .sub-status {
-            font-size: 1.2em;
+            font-size: 4vh;
             font-weight: bold;
         }
 
         .time-main {
-            font-size: 4em;
+            font-size: 15vh;
             font-weight: bold;
-            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
 
         .sub-time {
-            font-size: 2em;
-            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 10vh;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
     }
 
@@ -81,9 +91,8 @@ ion-toolbar {
         .cycles {
             font-size: 4em;
             color: $button-primary;
-            padding-left: 20px;
-            padding-right: 20px;
-            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            padding: 0 8%;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
 
         .play-button {
@@ -100,5 +109,56 @@ ion-toolbar {
         background-color: $background-color;
         font-size: 0.8em;
         width: 100%;
+    }
+}
+
+@media screen and (min-width: 1150px) {
+    ion-toolbar {
+        --min-height: 10vh;
+
+        .time-total-header {
+            font-size: 4vh;
+        }
+
+        ion-button {
+            font-size: 2.5vh;
+        }
+    }
+
+    .timer-container {
+        .time-display {
+
+            .status,
+            .sub-status {
+                font-size: 6vh;
+            }
+
+            .time-main {
+                font-size: 20vh;
+            }
+
+            .sub-time {
+                font-size: 10vh;
+            }
+        }
+
+        .counters {
+
+            .rounds,
+            .cycles {
+                font-size: 12vh;
+                padding: 0 10%;
+            }
+
+            ion-button{
+                font-size: 4vh;
+            }
+        }
+
+        .labels {
+            padding: 0 10.5%;
+            font-size: 4vh;
+
+        }
     }
 }
