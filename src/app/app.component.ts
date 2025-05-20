@@ -17,6 +17,8 @@ export class AppComponent {
 
   public isWeb: boolean;
   public load: boolean;
+  deferredPrompt: any = null;
+  showInstallButton = false;
 
   constructor(
     private translate: TranslateService,
@@ -63,6 +65,28 @@ export class AppComponent {
           }
         }
       });
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); // Previene el banner automático
+        this.deferredPrompt = e;
+        this.showInstallButton = true; // Mostrás tu botón personalizado
+      });
     });
+  }
+
+  installPWA() {
+    if (this.deferredPrompt) {
+      this.deferredPrompt.prompt();
+
+      this.deferredPrompt.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('PWA instalada ✅');
+        } else {
+          console.log('PWA no fue instalada ❌');
+        }
+        this.deferredPrompt = null;
+        this.showInstallButton = false;
+      });
+    }
   }
 }
