@@ -1,6 +1,6 @@
 {
-  "name": "trainingTime",
-  "short_name": "trainingTime",
+  "name": "Training Time",
+  "short_name": "Training",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

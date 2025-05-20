@@ -2,6 +2,7 @@
   <div *ngIf="showInstallButton" class="install-banner">
     <span>¿Querés instalar la app?</span>
     <button (click)="installPWA()">Instalar</button>
+    <button (click)="notInstallPWA()">No</button>
   </div>
   <ion-router-outlet *ngIf="load">
   </ion-router-outlet>
