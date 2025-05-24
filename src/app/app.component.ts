@@ -53,7 +53,6 @@ export class AppComponent {
             this.translate.instant('Bienvenido'),
             this.translate.instant('Que tengas buen entrenamiento')
           );
-          this.showInstallButton = true;
         }
       });
       CapacitorApp.addListener('backButton', () => {
