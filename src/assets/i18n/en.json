@@ -1,4 +1,6 @@
 {
+    "label.no.students": "There are not students",
+    "label.add.student": "Add student",
     "label.no.structures": "There are not training structures",
     "label.user": "User",
     "label.add.structure": "Add",
@@ -27,7 +29,7 @@
     "label.structure.series": "Series:",
     "label.structure.restBetweenSeries": "Rest between series:",
     "label.structure.restBetweenS": "Rest B/S:",
-    "label.stopwatch": "Stopwatch",
+    "label.progressTable": "Progress Table",
     "label.no.clases": "There are not clases",
     "label.add.class": "Add class",
     "label.class.date.start": "Date start",

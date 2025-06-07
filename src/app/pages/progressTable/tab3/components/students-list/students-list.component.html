@@ -1,0 +1,50 @@
+<ion-grid>
+  <ion-row>
+    <ion-col *ngIf="!showForm">
+      <ion-row>
+        <ion-col>
+          <app-list-data [data]="students" emptyText="label.no.students" addText="label.add.student"
+            (addEvent)="onShowForm()">
+
+            <ng-template #templateData let-item="item">
+
+              <ion-list>
+                <ion-item-sliding>
+                  <ion-item (click)="selectItem(item.Id)" lines="none">
+                    <ion-label>
+                      <ion-grid>
+                        <ion-row>
+                          <h1>{{item.Name}}</h1>
+                        </ion-row>
+
+                        <ion-row>
+                          <ion-col size="7">
+                            <p>{{'label.structure.preparation' | translate}}
+                          </ion-col>
+                          <ion-col size="5">
+                            <p>{{'label.structure.rounds' | translate}} {{item.Rounds}}</p>
+                            <p>{{'label.structure.series' | translate}} {{item.Series}}</p>
+                          </ion-col>
+                        </ion-row>
+                      </ion-grid>
+                    </ion-label>
+
+                  </ion-item>
+
+                  <ion-item-options side="end">
+                    <ion-item-option color="danger" (click)="deleteStructureConfirm(item)">
+                      <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                    </ion-item-option>
+                  </ion-item-options>
+                </ion-item-sliding>
+              </ion-list>
+            </ng-template>
+
+          </app-list-data>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <ion-col *ngIf="showForm">
+    </ion-col>
+  </ion-row>
+</ion-grid>
