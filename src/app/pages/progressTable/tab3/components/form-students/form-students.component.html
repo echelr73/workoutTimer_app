@@ -1,0 +1,31 @@
+<form #form="ngForm" action="" (ngSubmit)="createUpdateStudent(form)" novalidate>
+  <ion-item [class.input-invalid]="(nameInput.invalid && nameInput.touched)" lines="full">
+    <ion-input [label]="'label.student.name' | translate" [(ngModel)]="student.Name" required type="text" name="name"
+      #nameInput="ngModel" #name></ion-input>
+  </ion-item>
+  <ion-item lines="full">
+    <ion-input [label]="'label.student.height' | translate" [(ngModel)]="student.Height" required type="text" name="height"
+      #nameInput="ngModel" #height></ion-input>
+  </ion-item>
+  <ion-item lines="full">
+    <ion-input [label]="'label.student.weight' | translate" [(ngModel)]="student.Weight" required type="text" name="weight"
+    #nameInput="ngModel" #weight></ion-input>
+  </ion-item>
+  <ion-item lines="full">
+    <ion-input [label]="'label.student.birthdate' | translate" [(ngModel)]="student.Birthdate" required type="text" name="birthdate"
+    #nameInput="ngModel" #birthdate></ion-input>
+  </ion-item>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" type="button" (click)="closeFormEmit()">{{'label.back' | translate}}</ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" type="submit" [disabled]="form.invalid">{{(update ? 'label.edit.structure' :
+          'label.add.structure') | translate}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</form>

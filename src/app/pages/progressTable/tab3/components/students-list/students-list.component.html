@@ -18,12 +18,10 @@
                         </ion-row>
 
                         <ion-row>
-                          <ion-col size="7">
-                            <p>{{'label.structure.preparation' | translate}}
-                          </ion-col>
-                          <ion-col size="5">
-                            <p>{{'label.structure.rounds' | translate}} {{item.Rounds}}</p>
-                            <p>{{'label.structure.series' | translate}} {{item.Series}}</p>
+                          <ion-col>
+                            <p>{{'label.student.age' | translate}} {{calculateAge(item.Birthdate)}}</p>
+                            <p>{{'label.student.height' | translate}} {{item.Height}} m</p>
+                            <p>{{'label.student.weight' | translate}} {{item.Weight}} kg</p>
                           </ion-col>
                         </ion-row>
                       </ion-grid>
@@ -32,6 +30,9 @@
                   </ion-item>
 
                   <ion-item-options side="end">
+                    <ion-item-option color="warning" (click)="updateStudent(item)">
+                      <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+                    </ion-item-option>
                     <ion-item-option color="danger" (click)="deleteStructureConfirm(item)">
                       <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
                     </ion-item-option>
@@ -45,6 +46,7 @@
       </ion-row>
     </ion-col>
     <ion-col *ngIf="showForm">
+      <app-form-students [student]="studentSelected" (closeForm)="onCloseForm()"></app-form-students>
     </ion-col>
   </ion-row>
 </ion-grid>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Student } from 'src/app/models/student';
 import { AlertService } from 'src/app/services/alert.service';
 import { SqlliteManagerService } from 'src/app/services/sqllite-manager.service';
 
@@ -12,7 +13,8 @@ import { SqlliteManagerService } from 'src/app/services/sqllite-manager.service'
 export class StudentsListComponent implements OnInit {
 
   public showForm: boolean;
-  public students: any;
+  public students: Student[];
+  public studentSelected: Student;
 
   constructor(
     private sqliteService: SqlliteManagerService,
@@ -20,52 +22,86 @@ export class StudentsListComponent implements OnInit {
     private alertService: AlertService,
   ) {
     this.showForm = false;
+    this.students = [];
+    this.studentSelected = null;
   }
 
   ngOnInit() {
-    //this.getStructures();
+    this.getStudents();
+  }
+
+  getStudents() {
+    Promise.all([
+      this.sqliteService.getStudents()]).then(data => {
+        this.students = data[0];
+      })
+
   }
 
   onShowForm() {
     this.showForm = true;
-    //this.structureSelected = null;
+    this.studentSelected = null;
   }
 
   onCloseForm() {
     this.showForm = false;
-    //this.getStructures();
+    this.getStudents();
   }
 
-  async deleteStructureConfirm(item: any) {
+  async deleteStructureConfirm(item: Student) {
     const self = this;
     this.alertService.alertConfirm(
       this.translateService.instant('label.confirm'),
-      this.translateService.instant('label.confirm.message.structure'),
+      this.translateService.instant('label.confirm.message.student'),
       () => {
-        self.deleteStructure(item);
+        self.deleteStudent(item);
       }
     );
   }
 
-  deleteStructure(item: any) {
-    this.sqliteService.deleteStructure(item.Id).then(() => {
+  deleteStudent(item: Student) {
+    this.sqliteService.deleteStudent(item.Id).then(() => {
       this.alertService.alertMessage(
         this.translateService.instant('label.success'),
-        this.translateService.instant('label.success.message.remove.structure')
+        this.translateService.instant('label.success.message.remove.student')
       );
-      //this.getStructures();
+      this.getStudents();
     }).catch(error => {
       this.alertService.alertMessage(
         this.translateService.instant('label.error'),
-        this.translateService.instant('label.error.message.remove.structure')
+        this.translateService.instant('label.error.message.remove.student')
       );
     });
 
   }
 
-  
+
   selectItem(id: number) {
     //this.itemSelected.emit(id);
+  }
+
+  updateStudent(item: Student) {
+    this.studentSelected = item;
+    this.showForm = true;
+  }
+
+  calculateAge(birthDateStr: string): number {
+    const [day, month, year] = birthDateStr.split('/').map(Number);
+    const birthDate = new Date(year, month - 1, day);
+    const today = new Date();
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    // Check if the birthday hasn't occurred yet this year
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
   }
 
 }

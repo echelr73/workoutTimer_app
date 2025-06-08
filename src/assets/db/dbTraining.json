@@ -7,31 +7,147 @@
         {
             "name": "Configuration",
             "schema": [
-                { "column": "Id", "value": "INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT" },
-                { "column": "BeepSounds", "value": "BOOLEAN NOT NULL" },
-                { "column": "BeepSoundSelected", "value": "TEXT NOT NULL" },
-                { "column": "SoundVolume", "value": "INTEGER NOT NULL" },
-                { "column": "VoiceNotification", "value": "BOOLEAN NOT NULL" },
-                { "column": "DuckingEffect", "value": "BOOLEAN NOT NULL" }
+                {
+                    "column": "Id",
+                    "value": "INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT"
+                },
+                {
+                    "column": "BeepSounds",
+                    "value": "BOOLEAN NOT NULL"
+                },
+                {
+                    "column": "BeepSoundSelected",
+                    "value": "TEXT NOT NULL"
+                },
+                {
+                    "column": "SoundVolume",
+                    "value": "INTEGER NOT NULL"
+                },
+                {
+                    "column": "VoiceNotification",
+                    "value": "BOOLEAN NOT NULL"
+                },
+                {
+                    "column": "DuckingEffect",
+                    "value": "BOOLEAN NOT NULL"
+                }
             ],
             "values": [
-                [1, true, "beep", 8, false, false]
+                [
+                    1,
+                    true,
+                    "beep",
+                    8,
+                    false,
+                    false
+                ]
             ]
         },
         {
             "name": "TrainingStructure",
             "schema": [
-                { "column": "Id", "value": "INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT" },
-                { "column": "Name", "value": "TEXT NOT NULL" },
-                { "column": "PreparationTime", "value": "INTEGER NOT NULL" },
-                { "column": "TrainingTime", "value": "INTEGER NOT NULL" },
-                { "column": "RestTime", "value": "INTEGER NOT NULL" },
-                { "column": "Rounds", "value": "INTEGER NOT NULL" },
-                { "column": "Series", "value": "INTEGER NOT NULL" },
-                { "column": "RestBetweenSeries", "value": "INTEGER NOT NULL" }
+                {
+                    "column": "Id",
+                    "value": "INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT"
+                },
+                {
+                    "column": "Name",
+                    "value": "TEXT NOT NULL"
+                },
+                {
+                    "column": "PreparationTime",
+                    "value": "INTEGER NOT NULL"
+                },
+                {
+                    "column": "TrainingTime",
+                    "value": "INTEGER NOT NULL"
+                },
+                {
+                    "column": "RestTime",
+                    "value": "INTEGER NOT NULL"
+                },
+                {
+                    "column": "Rounds",
+                    "value": "INTEGER NOT NULL"
+                },
+                {
+                    "column": "Series",
+                    "value": "INTEGER NOT NULL"
+                },
+                {
+                    "column": "RestBetweenSeries",
+                    "value": "INTEGER NOT NULL"
+                }
             ],
             "values": [
-                [1, "Tabata", 3, 60, 30, 4, 3, 240]
+                [
+                    1,
+                    "Tabata",
+                    3,
+                    60,
+                    30,
+                    4,
+                    3,
+                    240
+                ]
+            ]
+        },
+        {
+            "name": "Student",
+            "schema": [
+                {
+                    "column": "Id",
+                    "value": "INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT"
+                },
+                {
+                    "column": "Name",
+                    "value": "TEXT NOT NULL"
+                },
+                {
+                    "column": "Height",
+                    "value": "REAL NOT NULL"
+                },
+                {
+                    "column": "Weight",
+                    "value": "REAL NOT NULL"
+                },
+                {
+                    "column": "Birthdate",
+                    "value": "TEXT NOT NULL"
+                }
+            ]
+        },
+        {
+            "name": "Progress",
+            "schema": [
+                {
+                    "column": "Id",
+                    "value": "INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT"
+                },
+                {
+                    "column": "StudentId",
+                    "value": "INTEGER NOT NULL"
+                },
+                {
+                    "column": "ExerciseName",
+                    "value": "TEXT NOT NULL"
+                },
+                {
+                    "column": "MuscleGroup",
+                    "value": "TEXT NOT NULL"
+                },
+                {
+                    "column": "Measure",
+                    "value": "REAL NOT NULL"
+                },
+                {
+                    "column": "Date",
+                    "value": "TEXT NOT NULL"
+                },
+                {
+                    "foreignkey": "StudentId",
+                    "value": "REFERENCES Student(Id) ON DELETE CASCADE"
+                }
             ]
         }
     ]

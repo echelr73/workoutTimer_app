@@ -7,6 +7,7 @@ import { AlertController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { Structure } from '../models/structure';
 import { Configuration } from '../models/configuration';
+import { Student } from '../models/student';
 
 @Injectable({
   providedIn: 'root'
@@ -247,5 +248,93 @@ export class SqlliteManagerService {
       return Promise.resolve(structure);
     }).catch(error => Promise.reject(error));
 
+  }
+
+  async getStudents() {
+    let sql = 'SELECT * FROM student';
+
+    const dbName = await this.getDBName();
+    return CapacitorSQLite.query({
+      database: dbName,
+      statement: sql,
+      values: []
+    }).then((response: capSQLiteValues) => {
+      let students: Student[] = [];
+      for (let index = 0; index < response.values.length; index++) {
+        const row = response.values[index];
+        let student = row as Student;
+        students.push(student);
+      }
+      return Promise.resolve(students);
+    }).catch(error => Promise.reject(error));
+
+  }
+
+  async deleteStudent(id: number) {
+    const dbName = await this.getDBName();
+    let sql = 'DELETE FROM student WHERE id=?';
+    let values = [id];
+
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: sql,
+          values: values
+        }
+      ]
+    }).then(() => {
+      if (this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
+    }).catch(error => Promise.reject(error));
+  }
+
+  async createStudent(student: Student) {
+    const dbName = await this.getDBName();
+    let sql = 'INSERT INTO student (name, height, weight, birthdate) VALUES (?,?,?,?)';
+    let values = [student.Name, student.Height, student.Weight, student.Birthdate];
+
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: sql,
+          values: values
+        }
+      ]
+    }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
+      return changes;
+    }).catch(error => Promise.reject(error));
+  }
+
+  async updateStudent(student: Student) {
+    const dbName = await this.getDBName();
+    let sql = 'UPDATE student SET name=?, height=?, weight=?, birthdate=? WHERE id=?';
+    let values = [student.Name, student.Height, student.Weight, student.Birthdate, student.Id];
+
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: sql,
+          values: values
+        }
+      ]
+    }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
+      return changes;
+    }).catch(error => Promise.reject(error));
   }
 }
