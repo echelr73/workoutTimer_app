@@ -1,4 +1,5 @@
 {
+    "label.add.progress": "Agregar progreso",
     "label.no.students": "No hay estudiantes",
     "label.add.student": "Añadir estudiante",
     "label.progressTable": "Tabla de progreso",
@@ -11,6 +12,7 @@
     "label.student.age": "Edad:",
     "label.student.birthdate": "Fecha de Nacimiento:",
     "label.student.height": "Altura:",
+    "label.student.weight": "Peso:",
     "label.stuent.weight": "Peso:",
     "label.no.structures": "No hay estrcturas de entrenamiento",
     "label.user": "Usuario",
