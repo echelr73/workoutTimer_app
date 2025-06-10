@@ -26,16 +26,16 @@
 
         <tr *ngFor="let item of progress; let i = index">
           <td>
-            <ion-input [(ngModel)]="item.ExerciseName" name="exercise_{{i}}" placeholder="{{'label.header.excercise' | translate}}"
-              type="text"></ion-input>
+            <ion-input [(ngModel)]="item.ExerciseName" name="exercise_{{i}}"
+              placeholder="{{'label.header.excercise' | translate}}" type="text"></ion-input>
           </td>
           <td>
-            <ion-input [(ngModel)]="item.MuscleGroup" name="muscle_{{i}}" placeholder="{{'label.header.muscleGroup' | translate}}"
-              type="text"></ion-input>
+            <ion-input [(ngModel)]="item.MuscleGroup" name="muscle_{{i}}"
+              placeholder="{{'label.header.muscleGroup' | translate}}" type="text"></ion-input>
           </td>
           <td class="measure-col">
-            <ion-input [(ngModel)]="item.Measure" name="measure_{{i}}" type="number" placeholder="0"
-              type="number"></ion-input>
+            <ion-input [(ngModel)]="item.Measure" name="measure_{{i}}" type="text"
+              placeholder="{{'label.header.measure' | translate}}"></ion-input>
           </td>
           <td class="date-col">
             <ion-item lines="inset" class="custom-input-item">

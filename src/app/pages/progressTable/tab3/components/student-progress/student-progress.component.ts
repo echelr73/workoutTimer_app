@@ -82,8 +82,8 @@ export class StudentProgressComponent implements OnInit {
       StudentId:this.studentId,
       ExerciseName: '',
       MuscleGroup: '',
-      Measure: 0,
-      Date: '01/01/2025'
+      Measure: '',
+      Date: ''
     });
   }
 

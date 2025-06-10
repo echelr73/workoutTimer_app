@@ -7,8 +7,8 @@ export class Student {
 
     constructor() {
         this.Name = '';
-        this.Height = 0;
-        this.Weight = 0;
-        this.Birthdate = '01/01/2025';
+        this.Height = null;
+        this.Weight = null;
+        this.Birthdate = '';
     }
 }

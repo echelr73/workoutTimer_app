@@ -1,19 +1,19 @@
 <form #form="ngForm" action="" (ngSubmit)="createUpdateStudent(form)" novalidate>
   <ion-item [class.input-invalid]="(nameInput.invalid && nameInput.touched)" lines="full">
-    <ion-input [label]="'label.student.name' | translate" [(ngModel)]="student.Name" required type="text" name="name"
+    <ion-input [label]="'label.student.name' | translate" [(ngModel)]="student.Name" placeholder="{{'label.placeholder.name' | translate}}" required type="text" name="name"
       #nameInput="ngModel" #name></ion-input>
   </ion-item>
   <ion-item lines="full">
-    <ion-input [label]="'label.student.height' | translate" [(ngModel)]="student.Height" required type="text" name="height"
+    <ion-input [label]="'label.student.height' | translate" [(ngModel)]="student.Height" placeholder="0" required type="text" name="height"
       #nameInput="ngModel" #height></ion-input>
   </ion-item>
   <ion-item lines="full">
-    <ion-input [label]="'label.student.weight' | translate" [(ngModel)]="student.Weight" required type="text" name="weight"
+    <ion-input [label]="'label.student.weight' | translate" [(ngModel)]="student.Weight" placeholder="0" required type="text" name="weight"
     #nameInput="ngModel" #weight></ion-input>
   </ion-item>
   <ion-item lines="full">
-    <ion-input [label]="'label.student.birthdate' | translate" [(ngModel)]="student.Birthdate" required type="text" name="birthdate"
-    #nameInput="ngModel" #birthdate></ion-input>
+    <ion-input [label]="'label.student.birthdate' | translate" [(ngModel)]="student.Birthdate" placeholder="dd/mm/aaaa" required type="text" name="birthdate"
+    #nameInput="ngModel" pattern="^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$" #birthdate></ion-input>
   </ion-item>
 
   <ion-grid>

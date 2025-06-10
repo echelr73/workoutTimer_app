@@ -8,6 +8,7 @@
     "label.header.muscleGroup": "Muscle Group",
     "label.header.measure": "Unit",
     "label.header.date": "Date",
+    "label.placeholder.name": "Name",
     "label.student.name": "Name:",
     "label.student.age": "Age:",
     "label.student.birthdate": "Birthdate:",
