@@ -8,13 +8,14 @@ import { BehaviorSubject } from 'rxjs';
 import { Structure } from '../models/structure';
 import { Configuration } from '../models/configuration';
 import { Student } from '../models/student';
+import { Progress } from '../models/progress';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SqlliteManagerService {
 
-  public configurationSubject : BehaviorSubject<Configuration>;
+  public configurationSubject: BehaviorSubject<Configuration>;
   public dbReady: BehaviorSubject<boolean>;
   public isWeb: boolean;
   public dbName: string;
@@ -228,7 +229,7 @@ export class SqlliteManagerService {
           database: dbName
         });
       }
-      this.configurationSubject.next({ ...configuration} as Configuration);
+      this.configurationSubject.next({ ...configuration } as Configuration);
       return changes;
     }).catch(error => Promise.reject(error));
   }
@@ -333,6 +334,76 @@ export class SqlliteManagerService {
         CapacitorSQLite.saveToStore({
           database: dbName
         });
+      }
+      return changes;
+    }).catch(error => Promise.reject(error));
+  }
+
+  async getProgressForStudentId(id: number) {
+    const dbName = await this.getDBName();
+    let sql = 'SELECT * FROM progress WHERE studentId=?';
+    let values = id;
+
+    return CapacitorSQLite.query({
+      database: dbName,
+      statement: sql,
+      values: [values]
+    }).then((response: capSQLiteValues) => {
+      let progress: Progress[] = [];
+      for (let index = 0; index < response.values.length; index++) {
+        const row = response.values[index];
+        let exercise = row as Progress;
+        progress.push(exercise);
+      }
+      return Promise.resolve(progress);
+    }).catch(error => Promise.reject(error));
+
+  }
+
+  async updateMultipleProgress(progressList: Progress[]) {
+    const dbName = await this.getDBName();
+    const set: { statement: string; values: any[] }[] = [];
+
+    for (let progress of progressList) {
+      const sql = 'UPDATE progress SET exerciseName=?, muscleGroup=?, measure=?, Date=? WHERE id=?';
+      const values = [
+        progress.ExerciseName,
+        progress.MuscleGroup,
+        progress.Measure,
+        progress.Date,
+        progress.Id
+      ];
+
+      set.push({ statement: sql, values });
+    }
+
+    try {
+      const result = await CapacitorSQLite.executeSet({
+        database: dbName,
+        set
+      });
+
+      if (this.isWeb) {
+        await CapacitorSQLite.saveToStore({ database: dbName });
+      }
+
+      return result;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async insertMultipleProgress(progressList: Progress[]) {
+    const dbName = await this.getDBName();
+  
+    const set = progressList.map(progress => ({
+      statement: 'INSERT INTO progress (exerciseName, muscleGroup, measure, date, studentId) VALUES (?, ?, ?, ?, ?)',
+      values: [progress.ExerciseName, progress.MuscleGroup, progress.Measure, progress.Date, progress.StudentId]
+    }));
+  
+    return CapacitorSQLite.executeSet({ database: dbName, set }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
+        CapacitorSQLite.saveToStore({ database: dbName });
       }
       return changes;
     }).catch(error => Promise.reject(error));

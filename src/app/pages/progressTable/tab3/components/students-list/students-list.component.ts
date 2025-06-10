@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Student } from 'src/app/models/student';
 import { AlertService } from 'src/app/services/alert.service';
@@ -13,8 +13,10 @@ import { SqlliteManagerService } from 'src/app/services/sqllite-manager.service'
 export class StudentsListComponent implements OnInit {
 
   public showForm: boolean;
+  public showProgress: boolean;
   public students: Student[];
   public studentSelected: Student;
+  public studentItemSelected: number;
 
   constructor(
     private sqliteService: SqlliteManagerService,
@@ -22,8 +24,10 @@ export class StudentsListComponent implements OnInit {
     private alertService: AlertService,
   ) {
     this.showForm = false;
+    this.showProgress = false;
     this.students = [];
     this.studentSelected = null;
+    this.studentItemSelected = 0;
   }
 
   ngOnInit() {
@@ -40,11 +44,13 @@ export class StudentsListComponent implements OnInit {
 
   onShowForm() {
     this.showForm = true;
+    this.showProgress = false;
     this.studentSelected = null;
   }
 
   onCloseForm() {
     this.showForm = false;
+    this.showProgress = false;
     this.getStudents();
   }
 
@@ -77,12 +83,15 @@ export class StudentsListComponent implements OnInit {
 
 
   selectItem(id: number) {
-    //this.itemSelected.emit(id);
+    this.showForm = false;
+    this.showProgress = true;
+    this.studentItemSelected = id;
   }
 
   updateStudent(item: Student) {
     this.studentSelected = item;
     this.showForm = true;
+    this.showProgress = false;
   }
 
   calculateAge(birthDateStr: string): number {

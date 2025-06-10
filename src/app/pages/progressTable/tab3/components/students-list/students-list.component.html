@@ -1,6 +1,6 @@
 <ion-grid>
   <ion-row>
-    <ion-col *ngIf="!showForm">
+    <ion-col *ngIf="!showForm && !showProgress">
       <ion-row>
         <ion-col>
           <app-list-data [data]="students" emptyText="label.no.students" addText="label.add.student"
@@ -45,8 +45,11 @@
         </ion-col>
       </ion-row>
     </ion-col>
-    <ion-col *ngIf="showForm">
+    <ion-col *ngIf="showForm && !showProgress">
       <app-form-students [student]="studentSelected" (closeForm)="onCloseForm()"></app-form-students>
+    </ion-col>
+    <ion-col *ngIf="!showForm && showProgress">
+      <app-student-progress [studentId]="this.studentItemSelected" (closeForm)="onCloseForm()"></app-student-progress>
     </ion-col>
   </ion-row>
 </ion-grid>

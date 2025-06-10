@@ -1,0 +1,66 @@
+<ion-row>
+  <ion-col>
+    <ion-item (click)="addProgress()" lines="none">
+      <ion-label>{{'label.add.progress' | translate}}</ion-label>
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-item>
+  </ion-col>
+</ion-row>
+
+<ion-card>
+  <ion-card-content>
+    <table class="progress-table">
+      <thead>
+        <tr>
+          <th>{{'label.header.excercise' | translate}}</th>
+          <th>{{'label.header.muscleGroup' | translate}}</th>
+          <th class="measure-col">{{'label.header.measure' | translate}}</th>
+          <th class="date-col">{{'label.header.date' | translate}}</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngIf="progress.length === 0">
+          <td colspan="4" style="text-align: center;">{{'label.no.progress' | translate}}</td>
+        </tr>
+
+        <tr *ngFor="let item of progress; let i = index">
+          <td>
+            <ion-input [(ngModel)]="item.ExerciseName" name="exercise_{{i}}" placeholder="Excercise"
+              type="text"></ion-input>
+          </td>
+          <td>
+            <ion-input [(ngModel)]="item.MuscleGroup" name="muscle_{{i}}" placeholder="Muscle group"
+              type="text"></ion-input>
+          </td>
+          <td class="measure-col">
+            <ion-input [(ngModel)]="item.Measure" name="measure_{{i}}" type="number" placeholder="0"
+              type="number"></ion-input>
+          </td>
+          <td class="date-col">
+            <ion-item lines="inset" class="custom-input-item">
+              <input [(ngModel)]="item.Date" name="date_{{i}}" placeholder="dd/mm/yyyy" type="text" mask="00/00/0000"
+                class="native-input styled-date-input" />
+            </ion-item>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ion-card-content>
+</ion-card>
+
+<form #form="ngForm" action="" (ngSubmit)="updateProgress(form)" novalidate>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" type="button" (click)="closeFormEmit()">{{'label.back' | translate}}</ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" type="submit" [disabled]="!wasModified()">{{('label.edit.structure') |
+          translate}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</form>

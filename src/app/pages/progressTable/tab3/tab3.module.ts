@@ -9,6 +9,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { StudentsListComponent } from './components/students-list/students-list.component';
 import { ListDataComponent } from 'src/app/shared/list-data/list-data.component';
 import { FormStudentsComponent } from './components/form-students/form-students.component';
+import { StudentProgressComponent } from './components/student-progress/student-progress.component';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @NgModule({
   imports: [
@@ -18,11 +20,14 @@ import { FormStudentsComponent } from './components/form-students/form-students.
     Tab3PageRoutingModule,
     TranslateModule.forChild(),
     ListDataComponent,
+    NgxMaskDirective
   ],
+  providers: [provideNgxMask()],
   declarations: [
     Tab3Page,
     StudentsListComponent,
-    FormStudentsComponent
+    FormStudentsComponent,
+    StudentProgressComponent
   ]
 })
 export class Tab3PageModule {}

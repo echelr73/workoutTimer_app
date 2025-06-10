@@ -115,6 +115,13 @@
                     "column": "Birthdate",
                     "value": "TEXT NOT NULL"
                 }
+            ],
+            "values":[
+                [1,
+                "Virginia",
+                1.55,
+                55,
+                "03/02/1985"]
             ]
         },
         {

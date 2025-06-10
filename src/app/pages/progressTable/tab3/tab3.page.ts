@@ -9,8 +9,14 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class Tab3Page {
 
+  public showStudents = false;
+
   constructor(
     private translateService: TranslateService,
   ) {}
+
+  viewStudents(){
+    this.showStudents = !this.showStudents;
+  }
 
 }
