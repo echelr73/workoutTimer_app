@@ -16,8 +16,8 @@ export class Tab1Page {
 
   @ViewChild(ListSettingsComponent) listSettings!: ListSettingsComponent;
 
-  private initialConfiguration: Configuration; // Configuración inicial para comparar cambios
-  public hasUnsavedChanges: boolean = false; // Estado para rastrear cambios
+  private initialConfiguration: Configuration;
+  public hasUnsavedChanges: boolean = false;
 
 
   constructor(
@@ -29,13 +29,12 @@ export class Tab1Page {
 
   loadConfiguration() {
     this.sqliteService.getConfiguration().then(config => {
-      this.initialConfiguration = this.normalizeConfig(config[0]); // Crear copia inicial
+      this.initialConfiguration = this.normalizeConfig(config[0]);
     });
   }
 
   ionViewWillEnter() {
-    this.listSettings.loadConfiguration(); // Cargar configuración actual
-    // Cargar configuración inicial y guardar copia
+    this.listSettings.loadConfiguration();
     this.loadConfiguration();
   }
 
@@ -53,12 +52,10 @@ export class Tab1Page {
     }
   }
 
-  // Método llamado cuando el usuario hace algún cambio
   onSettingsChange() {
     this.checkForUnsavedChanges();
   }
 
-  // Comparar configuración actual con la inicial
   private checkForUnsavedChanges() {
     const currentConfig = this.normalizeConfig(this.listSettings.getConfiguration());
     this.hasUnsavedChanges = JSON.stringify(this.initialConfiguration) !== JSON.stringify(currentConfig);
@@ -96,16 +93,12 @@ export class Tab1Page {
 
     for (const key in config) {
       if (key === 'Id' || key === 'SoundVolume') {
-        // Excluir 'Id' y 'SoundVolume', dejarlos tal cual
         normalizedConfig[key] = config[key];
       } else if (config[key] === 0 || config[key] === 1) {
-        // Convertir 0 y 1 en false o true
         normalizedConfig[key] = !!config[key];
       } else if (typeof config[key] === 'boolean') {
-        // Si ya es booleano, mantenerlo
         normalizedConfig[key] = config[key];
       } else {
-        // Mantener el resto igual
         normalizedConfig[key] = config[key];
       }
     }

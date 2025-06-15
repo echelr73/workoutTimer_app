@@ -1,4 +1,3 @@
-// Palette
 $background-color: #121212;
 $card-background: #1E1E1E;
 $text-primary: #FFFFFF;
@@ -72,12 +71,10 @@ ion-toolbar {
         .time-main {
             font-size: 15vh;
             font-weight: bold;
-            //font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
 
         .sub-time {
             font-size: 10vh;
-            //font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
     }
 
@@ -92,7 +89,6 @@ ion-toolbar {
             font-size: 4em;
             color: $button-primary;
             padding: 0 6%;
-            //font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
 
         .play-button {

@@ -57,7 +57,6 @@ export class AppComponent {
       });
       CapacitorApp.addListener('backButton', () => {
         const currentUrl = this.router.url;
-        // Verificamos si estamos en el tab 2
         if (currentUrl.includes('/tabs/tab2')) {
           const confirmExit = confirm('¿Querés salir de la app?');
           if (confirmExit) {
@@ -67,9 +66,9 @@ export class AppComponent {
       });
 
       window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault(); // Previene el banner automático
+        e.preventDefault();
         this.deferredPrompt = e;
-        this.showInstallButton = true; // Mostrás tu botón personalizado
+        this.showInstallButton = true;
       });
     });
   }
