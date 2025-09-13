@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { KeepAwake } from '@capacitor-community/keep-awake';
 import { TranslateService } from '@ngx-translate/core';
 import { Structure } from 'src/app/models/structure';
 import { AlertService } from 'src/app/services/alert.service';
@@ -66,11 +67,12 @@ export class TrainingStructureComponent implements OnInit {
     );
   }
 
-  resetStructure() {
+  async resetStructure() {
     clearInterval(this.intervalId);
     this.currentPhase = 'Preparation';
     this.isRunning = false;
     this.isRunningTimer.emit(this.isRunning);
+    await KeepAwake.allowSleep();
     this.currentRound = 0;
     this.currentSeries = 0;
     this.getTrainingStructure(this.structureId);
@@ -280,11 +282,12 @@ export class TrainingStructureComponent implements OnInit {
     }, 1000);
   }
 
-  toggleTimer() {
+  async toggleTimer() {
     this.isRunning = !this.isRunning;
     this.isRunningTimer.emit(this.isRunning);
 
     if (this.isRunning) {
+      await KeepAwake.keepAwake();
       this.startTimers();
     }
   }
