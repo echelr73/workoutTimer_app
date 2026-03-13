@@ -1,6 +1,19 @@
-Para arrancar Ionic en local:
-ionic serve --watch
+# 🏋️ WorkoutTimer App
 
-Para compilar el proyecto antes de Abrir Android:
-	1- ionic capacitor build android
-	2- npx capacitor-assets generate --android
+> Documentación completa disponible en:
+> **[https://echelr73.github.io/workoutTimer_app/](https://echelr73.github.io/workoutTimer_app/)**
+
+---
+
+## Desarrollo local
+
+```bash
+ionic serve --watch
+```
+
+## Build Android
+
+```bash
+ionic capacitor build android
+npx capacitor-assets generate --android
+```

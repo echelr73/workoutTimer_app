@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WorkoutTimer App — Documentación</title>
+
+<!-- Mermaid -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+<style>
+/* ─── CSS Variables ─── */
+:root {
+  --bg-primary:    #0d1117;
+  --bg-secondary:  #161b22;
+  --bg-tertiary:   #21262d;
+  --bg-card:       #1c2128;
+  --border:        #30363d;
+  --border-hover:  #484f58;
+  --text-primary:  #e6edf3;
+  --text-secondary:#8b949e;
+  --text-muted:    #6e7681;
+  --accent:        #58a6ff;
+  --accent-hover:  #79beff;
+  --accent-dim:    rgba(88,166,255,.12);
+  --green:         #3fb950;
+  --green-dim:     rgba(63,185,80,.12);
+  --orange:        #f0883e;
+  --orange-dim:    rgba(240,136,62,.12);
+  --purple:        #bc8cff;
+  --purple-dim:    rgba(188,140,255,.12);
+  --red:           #f85149;
+  --red-dim:       rgba(248,81,73,.12);
+  --yellow:        #e3b341;
+  --yellow-dim:    rgba(227,179,65,.12);
+  --radius-sm:     6px;
+  --radius-md:     10px;
+  --radius-lg:     14px;
+  --shadow:        0 4px 24px rgba(0,0,0,.5);
+  --toc-width:     280px;
+  --header-h:      56px;
+  --font-mono:     'SF Mono','Fira Code','Cascadia Code',monospace;
+}
+
+/* ─── Reset & Base ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  background:var(--bg-primary);
+  color:var(--text-primary);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  line-height:1.7;
+  display:flex;
+  min-height:100vh;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-hover);text-decoration:underline}
+code{
+  font-family:var(--font-mono);
+  font-size:.85em;
+  background:var(--bg-tertiary);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:.1em .35em;
+}
+pre{
+  background:var(--bg-tertiary);
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  padding:1.1rem 1.3rem;
+  overflow-x:auto;
+  font-family:var(--font-mono);
+  font-size:.82rem;
+  line-height:1.6;
+  position:relative;
+}
+pre code{background:none;border:none;padding:0;font-size:inherit}
+h1,h2,h3,h4{line-height:1.3;font-weight:600}
+h2{
+  font-size:1.55rem;
+  border-bottom:2px solid var(--border);
+  padding-bottom:.45rem;
+  margin-bottom:1.4rem;
+  margin-top:0;
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+}
+h3{font-size:1.15rem;margin-bottom:.8rem;color:var(--text-primary)}
+h4{font-size:.95rem;color:var(--text-secondary);margin-bottom:.5rem}
+p{margin-bottom:.9rem;color:var(--text-secondary)}
+ul,ol{padding-left:1.4rem;color:var(--text-secondary);margin-bottom:.9rem}
+li{margin-bottom:.25rem}
+table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:1.2rem}
+th{
+  background:var(--bg-tertiary);
+  color:var(--text-primary);
+  font-weight:600;
+  text-align:left;
+  padding:.55rem .85rem;
+  border:1px solid var(--border);
+  white-space:nowrap;
+}
+td{
+  padding:.5rem .85rem;
+  border:1px solid var(--border);
+  color:var(--text-secondary);
+  vertical-align:top;
+}
+tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+tr:hover td{background:var(--accent-dim)}
+
+/* ─── Layout ─── */
+#toc-sidebar{
+  width:var(--toc-width);
+  min-width:var(--toc-width);
+  background:var(--bg-secondary);
+  border-right:1px solid var(--border);
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  z-index:100;
+  scrollbar-width:thin;
+  scrollbar-color:var(--border) transparent;
+}
+#toc-sidebar::-webkit-scrollbar{width:5px}
+#toc-sidebar::-webkit-scrollbar-track{background:transparent}
+#toc-sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+.toc-header{
+  padding:1.1rem 1rem .6rem;
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  background:var(--bg-secondary);
+  z-index:1;
+}
+.toc-title{
+  font-size:.75rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  margin-bottom:.65rem;
+}
+.toc-search{
+  width:100%;
+  background:var(--bg-tertiary);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text-primary);
+  font-size:.82rem;
+  padding:.38rem .7rem;
+  outline:none;
+  transition:border-color .2s;
+}
+.toc-search:focus{border-color:var(--accent)}
+.toc-search::placeholder{color:var(--text-muted)}
+
+#toc-list{
+  list-style:none;
+  padding:.5rem 0 2rem;
+}
+#toc-list li a{
+  display:block;
+  padding:.32rem 1rem .32rem 1.1rem;
+  font-size:.83rem;
+  color:var(--text-secondary);
+  text-decoration:none;
+  border-left:2px solid transparent;
+  transition:all .18s;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#toc-list li a:hover{
+  color:var(--text-primary);
+  background:var(--accent-dim);
+  border-left-color:var(--accent);
+}
+#toc-list li a.active{
+  color:var(--accent);
+  background:var(--accent-dim);
+  border-left-color:var(--accent);
+  font-weight:600;
+}
+#toc-list li.toc-h3 a{
+  padding-left:2rem;
+  font-size:.79rem;
+  color:var(--text-muted);
+}
+#toc-list li.hidden{display:none}
+
+main{
+  flex:1;
+  min-width:0;
+  padding:2.5rem 3rem 4rem;
+  max-width:1100px;
+}
+
+/* ─── Header ─── */
+.doc-header{
+  margin-bottom:2.8rem;
+  padding-bottom:1.6rem;
+  border-bottom:1px solid var(--border);
+}
+.doc-header h1{
+  font-size:2rem;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:.5rem;
+}
+.doc-meta{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  margin-top:.7rem;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:.3rem;
+  font-size:.76rem;
+  font-weight:600;
+  padding:.22rem .65rem;
+  border-radius:20px;
+  border:1px solid;
+}
+.badge-blue{color:var(--accent);border-color:var(--accent);background:var(--accent-dim)}
+.badge-green{color:var(--green);border-color:var(--green);background:var(--green-dim)}
+.badge-orange{color:var(--orange);border-color:var(--orange);background:var(--orange-dim)}
+.badge-purple{color:var(--purple);border-color:var(--purple);background:var(--purple-dim)}
+.badge-yellow{color:var(--yellow);border-color:var(--yellow);background:var(--yellow-dim)}
+
+/* ─── Section ─── */
+.section{
+  margin-bottom:3.5rem;
+  scroll-margin-top:1.5rem;
+}
+
+/* ─── Cards Grid ─── */
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(310px,1fr));
+  gap:1.1rem;
+  margin-bottom:1.5rem;
+}
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:1.3rem 1.4rem;
+  transition:border-color .2s, box-shadow .2s;
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+}
+.card-blue::before{background:var(--accent)}
+.card-green::before{background:var(--green)}
+.card-orange::before{background:var(--orange)}
+.card-purple::before{background:var(--purple)}
+.card-red::before{background:var(--red)}
+.card-yellow::before{background:var(--yellow)}
+.card:hover{border-color:var(--border-hover);box-shadow:var(--shadow)}
+.card-title{
+  font-size:1rem;
+  font-weight:700;
+  color:var(--text-primary);
+  margin-bottom:.4rem;
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+}
+.card-subtitle{
+  font-size:.78rem;
+  color:var(--text-muted);
+  margin-bottom:.85rem;
+}
+.card-body{font-size:.85rem;color:var(--text-secondary)}
+.card-body ul{margin:0;padding-left:1.2rem}
+.card-body li{margin-bottom:.2rem}
+.card-footer{
+  margin-top:.9rem;
+  padding-top:.75rem;
+  border-top:1px solid var(--border);
+  display:flex;
+  flex-wrap:wrap;
+  gap:.35rem;
+}
+
+/* ─── Stack Cards ─── */
+.stack-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:.85rem;
+  margin-bottom:1.5rem;
+}
+.stack-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  padding:.95rem 1.1rem;
+  transition:border-color .2s;
+}
+.stack-card:hover{border-color:var(--border-hover)}
+.stack-cat{
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  margin-bottom:.55rem;
+}
+.stack-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:.25rem;
+  font-size:.84rem;
+}
+.stack-name{color:var(--text-primary);font-weight:500}
+.stack-version{color:var(--text-muted);font-size:.76rem;font-family:var(--font-mono)}
+
+/* ─── Endpoint Cards ─── */
+.endpoint-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  margin-bottom:1.2rem;
+  overflow:hidden;
+  transition:border-color .2s;
+}
+.endpoint-card:hover{border-color:var(--border-hover)}
+.endpoint-header{
+  display:flex;
+  align-items:center;
+  gap:.75rem;
+  padding:.85rem 1.2rem;
+  background:var(--bg-tertiary);
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+  user-select:none;
+}
+.method-badge{
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  font-weight:700;
+  padding:.2rem .55rem;
+  border-radius:4px;
+  letter-spacing:.03em;
+  white-space:nowrap;
+}
+.method-get{background:#1b3e2d;color:#3fb950;border:1px solid #3fb950}
+.method-post{background:#1e2f4a;color:#58a6ff;border:1px solid #58a6ff}
+.method-put{background:#3d2e0a;color:#e3b341;border:1px solid #e3b341}
+.method-delete{background:#3d0f0f;color:#f85149;border:1px solid #f85149}
+.method-local{background:#2d1e4a;color:#bc8cff;border:1px solid #bc8cff}
+
+.endpoint-path{
+  font-family:var(--font-mono);
+  font-size:.88rem;
+  color:var(--text-primary);
+  flex:1;
+}
+.endpoint-desc{
+  font-size:.8rem;
+  color:var(--text-muted);
+}
+.endpoint-body{
+  padding:1.1rem 1.2rem;
+}
+.endpoint-body table{margin-bottom:.5rem}
+.chevron{
+  margin-left:auto;
+  transition:transform .25s;
+  color:var(--text-muted);
+  font-size:.75rem;
+}
+.endpoint-card.open .chevron{transform:rotate(180deg)}
+.endpoint-card .endpoint-body{display:none}
+.endpoint-card.open .endpoint-body{display:block}
+
+/* ─── Mermaid ─── */
+.mermaid-wrap{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:1.5rem;
+  overflow-x:auto;
+  margin-bottom:1.5rem;
+}
+.mermaid{max-width:100%}
+
+/* ─── Copy Button ─── */
+.copy-btn{
+  position:absolute;
+  top:.55rem;right:.65rem;
+  background:var(--bg-secondary);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text-secondary);
+  font-size:.72rem;
+  padding:.2rem .55rem;
+  cursor:pointer;
+  transition:all .18s;
+  font-family:var(--font-mono);
+  z-index:1;
+}
+.copy-btn:hover{background:var(--bg-tertiary);color:var(--text-primary);border-color:var(--border-hover)}
+.copy-btn.copied{color:var(--green);border-color:var(--green)}
+
+/* ─── Alert box ─── */
+.alert{
+  border-radius:var(--radius-md);
+  padding:.85rem 1.1rem;
+  font-size:.86rem;
+  margin-bottom:1.2rem;
+  border-left:3px solid;
+  display:flex;
+  gap:.65rem;
+  align-items:flex-start;
+}
+.alert-blue{background:var(--accent-dim);border-color:var(--accent);color:var(--text-secondary)}
+.alert-orange{background:var(--orange-dim);border-color:var(--orange);color:var(--text-secondary)}
+.alert-green{background:var(--green-dim);border-color:var(--green);color:var(--text-secondary)}
+
+/* ─── Mapping table ─── */
+.map-screen{font-weight:600;color:var(--text-primary)}
+.map-endpoint code{font-size:.78rem}
+.tag-pill{
+  display:inline-block;
+  font-size:.72rem;
+  padding:.1rem .45rem;
+  border-radius:20px;
+  margin:.1rem .1rem;
+  white-space:nowrap;
+}
+.tag-blue{background:var(--accent-dim);color:var(--accent)}
+.tag-green{background:var(--green-dim);color:var(--green)}
+.tag-orange{background:var(--orange-dim);color:var(--orange)}
+.tag-purple{background:var(--purple-dim);color:var(--purple)}
+.tag-red{background:var(--red-dim);color:var(--red)}
+
+/* ─── Section icon ─── */
+.sec-icon{
+  width:28px;height:28px;
+  border-radius:var(--radius-sm);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:1rem;
+  flex-shrink:0;
+}
+.si-blue{background:var(--accent-dim)}
+.si-green{background:var(--green-dim)}
+.si-orange{background:var(--orange-dim)}
+.si-purple{background:var(--purple-dim)}
+.si-red{background:var(--red-dim)}
+.si-yellow{background:var(--yellow-dim)}
+
+/* ─── Phase timeline ─── */
+.phase-row{
+  display:flex;
+  align-items:stretch;
+  gap:0;
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  margin-bottom:1.2rem;
+  border:1px solid var(--border);
+}
+.phase-block{
+  flex:1;
+  padding:.7rem .6rem;
+  font-size:.78rem;
+  font-weight:600;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.2rem;
+}
+.ph-prep{background:#1b3040;color:#58a6ff}
+.ph-train{background:#1b3e2d;color:#3fb950}
+.ph-rest{background:#3d2e0a;color:#e3b341}
+.ph-series{background:#2d1e4a;color:#bc8cff}
+.ph-end{background:#3d0f0f;color:#f85149}
+.phase-label{font-size:.66rem;font-weight:400;opacity:.75}
+
+/* ─── Scrollbar global ─── */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg-primary)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--border-hover)}
+
+/* ─── Responsive ─── */
+@media(max-width:900px){
+  body{flex-direction:column}
+  #toc-sidebar{
+    width:100%;min-width:unset;height:auto;
+    position:relative;border-right:none;
+    border-bottom:1px solid var(--border);
+  }
+  #toc-list{
+    display:flex;flex-wrap:wrap;padding:.4rem .5rem;
+  }
+  #toc-list li a{
+    padding:.25rem .6rem;white-space:nowrap;border:1px solid var(--border);
+    border-radius:20px;border-left:1px solid var(--border);
+    font-size:.75rem;
+  }
+  #toc-list li a.active{border-color:var(--accent)}
+  #toc-list li.toc-h3{display:none}
+  main{padding:1.5rem 1.2rem 3rem}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ═══════════════════════════════════════════════════ SIDEBAR TOC -->
+<nav id="toc-sidebar" aria-label="Tabla de contenidos">
+  <div class="toc-header">
+    <div class="toc-title">📖 Contenidos</div>
+    <input class="toc-search" type="search" id="toc-search" placeholder="Buscar sección…" autocomplete="off" />
+  </div>
+  <ul id="toc-list">
+    <li class="toc-h2"><a href="#overview">🏠 Visión General</a></li>
+    <li class="toc-h2"><a href="#stack">⚙️ Stack Tecnológico</a></li>
+    <li class="toc-h3"><a href="#stack-framework">Framework &amp; Plataforma</a></li>
+    <li class="toc-h3"><a href="#stack-bd">Base de Datos</a></li>
+    <li class="toc-h3"><a href="#stack-plugins">Plugins Capacitor</a></li>
+    <li class="toc-h3"><a href="#stack-tools">Herramientas</a></li>
+    <li class="toc-h2"><a href="#flow">🔄 Flujo de Usuario</a></li>
+    <li class="toc-h3"><a href="#flow-app">Inicialización</a></li>
+    <li class="toc-h3"><a href="#flow-timer">Ciclo del Timer</a></li>
+    <li class="toc-h2"><a href="#screens">📱 Pantallas</a></li>
+    <li class="toc-h3"><a href="#screen-tab1">Tab 1 — Configuración</a></li>
+    <li class="toc-h3"><a href="#screen-tab2">Tab 2 — Estructuras &amp; Timer</a></li>
+    <li class="toc-h3"><a href="#screen-tab3">Tab 3 — Progreso</a></li>
+    <li class="toc-h2"><a href="#data">🗄️ Modelos de Datos</a></li>
+    <li class="toc-h3"><a href="#model-configuration">Configuration</a></li>
+    <li class="toc-h3"><a href="#model-structure">Structure</a></li>
+    <li class="toc-h3"><a href="#model-student">Student</a></li>
+    <li class="toc-h3"><a href="#model-progress">Progress</a></li>
+    <li class="toc-h2"><a href="#api">🔌 API / Endpoints</a></li>
+    <li class="toc-h3"><a href="#api-http">HTTP Externo</a></li>
+    <li class="toc-h3"><a href="#api-sqlite">SQLite Local</a></li>
+    <li class="toc-h3"><a href="#api-sound">Servicio de Sonido</a></li>
+    <li class="toc-h3"><a href="#api-alert">Servicio de Alertas</a></li>
+    <li class="toc-h2"><a href="#mapping">🗺️ Mapeo Pantallas ↔ Endpoints</a></li>
+    <li class="toc-h2"><a href="#arch">🏗️ Arquitectura</a></li>
+    <li class="toc-h2"><a href="#audio">🔊 Sistema de Audio</a></li>
+    <li class="toc-h2"><a href="#i18n">🌍 Internacionalización</a></li>
+    <li class="toc-h2"><a href="#pwa">📦 PWA &amp; Deploy</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════ MAIN CONTENT -->
+<main>
+
+<!-- HEADER -->
+<div class="doc-header">
+  <h1>🏋️ WorkoutTimer App</h1>
+  <p style="color:var(--text-secondary);font-size:1rem;margin-bottom:.5rem">
+    Aplicación de entrenamiento offline-first con temporizador configurable, gestión de alumnos y seguimiento de progreso.
+  </p>
+  <div class="doc-meta">
+    <span class="badge badge-blue">Ionic 8</span>
+    <span class="badge badge-blue">Angular 19</span>
+    <span class="badge badge-green">Capacitor 6</span>
+    <span class="badge badge-orange">SQLite Local</span>
+    <span class="badge badge-purple">PWA + Android</span>
+    <span class="badge badge-yellow">Rama: PWA/Release1.1</span>
+  </div>
+</div>
+
+<!-- ═══ SECCIÓN: VISIÓN GENERAL ═══ -->
+<section class="section" id="overview">
+  <h2><span class="sec-icon si-blue">🏠</span> Visión General</h2>
+  <div class="alert alert-blue">
+    <span>ℹ️</span>
+    <div>
+      WorkoutTimer es una app <strong>offline-first</strong> para entrenadores. Permite definir estructuras HIIT/Tabata, ejecutar un temporizador por fases con audio, registrar alumnos y hacer seguimiento de su progreso — todo almacenado localmente en SQLite.
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="card card-blue">
+      <div class="card-title">⏱️ Temporizador</div>
+      <div class="card-subtitle">Core de la app</div>
+      <div class="card-body">
+        <ul>
+          <li>Fases: Preparación → Entrenamiento → Descanso → Descanso entre series</li>
+          <li>Countdown 3-2-1 con voces</li>
+          <li>Mantiene pantalla activa (KeepAwake)</li>
+          <li>Play / Pause / Reset</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">👤 Alumnos &amp; Progreso</div>
+      <div class="card-subtitle">Gestión y seguimiento</div>
+      <div class="card-body">
+        <ul>
+          <li>CRUD de alumnos con edad calculada</li>
+          <li>Tabla de ejercicios por alumno</li>
+          <li>Inserción/actualización de medidas</li>
+          <li>Validación de fechas dd/mm/yyyy</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">🔊 Audio Inteligente</div>
+      <div class="card-subtitle">11 beeps + voces por idioma</div>
+      <div class="card-body">
+        <ul>
+          <li>11 tipos de sonidos de beep</li>
+          <li>Voces en ES e EN por fase</li>
+          <li>Control de volumen 0-10</li>
+          <li>Ducking effect configurable</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card card-purple">
+      <div class="card-title">⚙️ Sin Backend</div>
+      <div class="card-subtitle">Arquitectura local</div>
+      <div class="card-body">
+        <ul>
+          <li>Base de datos SQLite local</li>
+          <li>Un solo request HTTP: seed inicial</li>
+          <li>Funciona 100% offline</li>
+          <li>PWA instalable + APK Android</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECCIÓN: STACK ═══ -->
+<section class="section" id="stack">
+  <h2><span class="sec-icon si-orange">⚙️</span> Stack Tecnológico</h2>
+
+  <h3 id="stack-framework">Framework &amp; Plataforma</h3>
+  <div class="stack-grid">
+    <div class="stack-card">
+      <div class="stack-cat">Core</div>
+      <div class="stack-item"><span class="stack-name">Ionic</span><span class="stack-version">^8.0.0</span></div>
+      <div class="stack-item"><span class="stack-name">Angular</span><span class="stack-version">^19.0.0</span></div>
+      <div class="stack-item"><span class="stack-name">TypeScript</span><span class="stack-version">~5.6.3</span></div>
+      <div class="stack-item"><span class="stack-name">RxJS</span><span class="stack-version">~7.8.0</span></div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-cat">Capacitor</div>
+      <div class="stack-item"><span class="stack-name">@capacitor/core</span><span class="stack-version">^6.2.0</span></div>
+      <div class="stack-item"><span class="stack-name">@capacitor/android</span><span class="stack-version">^6.2.1</span></div>
+      <div class="stack-item"><span class="stack-name">@capacitor/device</span><span class="stack-version">^6.0.2</span></div>
+      <div class="stack-item"><span class="stack-name">@capacitor/preferences</span><span class="stack-version">^6.0.3</span></div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-cat">UI &amp; UX</div>
+      <div class="stack-item"><span class="stack-name">@ionic/angular</span><span class="stack-version">^8.0.0</span></div>
+      <div class="stack-item"><span class="stack-name">ngx-mask</span><span class="stack-version">^19.0.7</span></div>
+      <div class="stack-item"><span class="stack-name">@ngx-translate/core</span><span class="stack-version">^16.0.4</span></div>
+      <div class="stack-item"><span class="stack-name">Zone.js</span><span class="stack-version">~0.15.0</span></div>
+    </div>
+  </div>
+
+  <h3 id="stack-bd">Base de Datos</h3>
+  <div class="stack-grid">
+    <div class="stack-card">
+      <div class="stack-cat">SQLite</div>
+      <div class="stack-item"><span class="stack-name">@capacitor-community/sqlite</span><span class="stack-version">^6.0.2</span></div>
+      <div class="stack-item"><span class="stack-name">jeep-sqlite (web)</span><span class="stack-version">^2.8.0</span></div>
+      <div class="stack-item"><span class="stack-name">sql.js</span><span class="stack-version">^1.12.0</span></div>
+    </div>
+  </div>
+
+  <h3 id="stack-plugins">Plugins Capacitor</h3>
+  <div class="stack-grid">
+    <div class="stack-card">
+      <div class="stack-cat">Plugins activos</div>
+      <div class="stack-item"><span class="stack-name">keep-awake</span><span class="stack-version">^6.0.0</span></div>
+      <div class="stack-item"><span class="stack-name">@capacitor/status-bar</span><span class="stack-version">6.0.2</span></div>
+      <div class="stack-item"><span class="stack-name">@capacitor/keyboard</span><span class="stack-version">6.0.3</span></div>
+      <div class="stack-item"><span class="stack-name">@capacitor/haptics</span><span class="stack-version">6.0.2</span></div>
+      <div class="stack-item"><span class="stack-name">@capacitor/app</span><span class="stack-version">6.0.2</span></div>
+      <div class="stack-item"><span class="stack-name">@capacitor-community/media</span><span class="stack-version">6.0</span></div>
+    </div>
+  </div>
+
+  <h3 id="stack-tools">Herramientas de Build &amp; Deploy</h3>
+  <div class="stack-grid">
+    <div class="stack-card">
+      <div class="stack-cat">Build</div>
+      <div class="stack-item"><span class="stack-name">@angular/cli</span><span class="stack-version">^19.0.0</span></div>
+      <div class="stack-item"><span class="stack-name">@capacitor/cli</span><span class="stack-version">6.2.0</span></div>
+      <div class="stack-item"><span class="stack-name">@ionic/angular-toolkit</span><span class="stack-version">^12.0.0</span></div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-cat">Deploy</div>
+      <div class="stack-item"><span class="stack-name">Firebase Hosting</span><span class="stack-version">—</span></div>
+      <div class="stack-item"><span class="stack-name">Angular Service Worker</span><span class="stack-version">^19.0.0</span></div>
+      <div class="stack-item"><span class="stack-name">buffer / crypto-browserify</span><span class="stack-version">polyfills</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECCIÓN: FLUJO DE USUARIO ═══ -->
+<section class="section" id="flow">
+  <h2><span class="sec-icon si-green">🔄</span> Flujo de Usuario</h2>
+
+  <h3 id="flow-app">Inicialización de la App</h3>
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+%%{init:{'theme':'dark','themeVariables':{'primaryColor':'#1c2128','primaryTextColor':'#e6edf3','primaryBorderColor':'#30363d','lineColor':'#58a6ff','secondaryColor':'#161b22','tertiaryColor':'#21262d','edgeLabelBackground':'#1c2128','clusterBkg':'#161b22','titleColor':'#e6edf3'}}}%%
+flowchart TD
+    A([📱 App Inicia]) --> B[Platform.ready]
+    B --> C[Device.getInfo\nweb / android / ios]
+    B --> D[Device.getLanguageCode\nes / en]
+    C --> E{Primera\nvez?}
+    D --> F[TranslateService.use\nidioma detectado]
+    E -->|Sí| G[HTTP GET\nassets/db/dbTraining.json]
+    E -->|No| H[Abrir BD\nexistente]
+    G --> I[CapacitorSQLite\nimportFromJson]
+    I --> J[BD Lista ✅]
+    H --> J
+    J --> K[dbReady: true\nBehaviorSubject]
+    K --> L[Router → /tabs/tab2]
+    L --> M{Plataforma}
+    M -->|Web| N[jeep-sqlite\nIndexedDB]
+    M -->|Android| O[SQLite Nativo\n.db file]
+    style A fill:#1b3e2d,color:#3fb950
+    style J fill:#1b3e2d,color:#3fb950
+    style G fill:#1e2f4a,color:#58a6ff
+    style K fill:#2d1e4a,color:#bc8cff
+    </div>
+  </div>
+
+  <h3 id="flow-timer">Ciclo del Temporizador</h3>
+
+  <div class="phase-row">
+    <div class="phase-block ph-prep">⏳<span class="phase-label">Preparación</span></div>
+    <div class="phase-block ph-train">💪<span class="phase-label">Entrenamiento</span></div>
+    <div class="phase-block ph-rest">😮‍💨<span class="phase-label">Descanso</span></div>
+    <div class="phase-block ph-train">💪<span class="phase-label">× Rounds</span></div>
+    <div class="phase-block ph-series">⏸️<span class="phase-label">Entre Series</span></div>
+    <div class="phase-block ph-end">🏁<span class="phase-label">Fin</span></div>
+  </div>
+
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+%%{init:{'theme':'dark','themeVariables':{'primaryColor':'#1c2128','primaryTextColor':'#e6edf3','primaryBorderColor':'#30363d','lineColor':'#58a6ff','secondaryColor':'#161b22','tertiaryColor':'#21262d','edgeLabelBackground':'#1c2128'}}}%%
+flowchart TD
+    START([▶️ startTimers]) --> KA[KeepAwake.keepAwake]
+    KA --> PREP[⏳ startPreparationTimer\nvoz: Preparation\ncountdown 3-2-1]
+    PREP --> TRAIN[💪 startTrainingTimer\nbeep al inicio]
+    TRAIN --> TRCHECK{rounds\nrestantes?}
+    TRCHECK -->|Sí| REST[😮‍💨 startRestTimer\nvoz: Rest\nroundCounter++]
+    REST --> TRAIN
+    TRCHECK -->|No| SERCHECK{series\nrestantes?}
+    SERCHECK -->|Sí| RESTSER[⏸️ startRestBetweenSeries\nvoz: RestBetweenSeries\nseriesCounter++\nrounds reset→1]
+    RESTSER --> TRAIN
+    SERCHECK -->|No| END([🏁 FIN\nreset estado])
+    END --> KS[KeepAwake.allowSleep]
+
+    PAUSE([⏸️ toggleTimer]) -.->|pausa| TRAIN
+    RESET([🔄 resetStructure]) -.->|reset| KS
+
+    style START fill:#1b3e2d,color:#3fb950
+    style END fill:#3d0f0f,color:#f85149
+    style KA fill:#2d1e4a,color:#bc8cff
+    style KS fill:#2d1e4a,color:#bc8cff
+    style PREP fill:#1b3040,color:#58a6ff
+    style TRAIN fill:#1b3e2d,color:#3fb950
+    style REST fill:#3d2e0a,color:#e3b341
+    style RESTSER fill:#2d1e4a,color:#bc8cff
+    </div>
+  </div>
+
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+%%{init:{'theme':'dark','themeVariables':{'primaryColor':'#1c2128','primaryTextColor':'#e6edf3','primaryBorderColor':'#30363d','lineColor':'#58a6ff','secondaryColor':'#161b22','tertiaryColor':'#21262d','edgeLabelBackground':'#1c2128'}}}%%
+flowchart LR
+    subgraph TAB2["📋 Tab 2 — Estructuras"]
+        LS[ListStructures\nseleccionar] --> TS[TrainingStructure\ntimer activo]
+        LS --> FS[FormStructures\ncreate/edit]
+    end
+    subgraph TAB3["📊 Tab 3 — Progreso"]
+        SL[StudentsList] --> FO[FormStudents\ncreate/edit]
+        SL --> SP[StudentProgress\ntabla editable]
+    end
+    subgraph TAB1["⚙️ Tab 1 — Config"]
+        LC[ListSettings\nconfigurar]
+    end
+    TAB1 -->|configura audio| TAB2
+    TAB2 -->|entrena| TAB3
+    style TAB1 fill:#1c2128
+    style TAB2 fill:#1c2128
+    style TAB3 fill:#1c2128
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECCIÓN: PANTALLAS ═══ -->
+<section class="section" id="screens">
+  <h2><span class="sec-icon si-purple">📱</span> Pantallas</h2>
+
+  <h3 id="screen-tab1">Tab 1 — Configuración <code>/tabs/tab1</code></h3>
+  <div class="alert alert-orange">
+    <span>⚙️</span>
+    <div>Permite configurar sonidos, volumen y notificaciones de voz. Detecta cambios sin guardar y advierte al salir.</div>
+  </div>
+  <div class="cards-grid">
+    <div class="card card-orange">
+      <div class="card-title">🎛️ ListSettingsComponent</div>
+      <div class="card-subtitle">Componente principal del tab</div>
+      <div class="card-body">
+        <ul>
+          <li>Cargar config al entrar (<code>ionViewWillEnter</code>)</li>
+          <li>Toggle BeepSounds on/off</li>
+          <li>Selector de sonido (11 opciones)</li>
+          <li>Slider de volumen 0–10</li>
+          <li>Toggle VoiceNotification</li>
+          <li>Toggle DuckingEffect</li>
+          <li>Botón Test de sonido</li>
+          <li>Guardar → <a href="#api-sqlite">SQLite UPDATE</a></li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <span class="tag-pill tag-orange">getConfiguration()</span>
+        <span class="tag-pill tag-orange">updateConfiguration()</span>
+        <span class="tag-pill tag-blue">SoundService.testSound()</span>
+      </div>
+    </div>
+    <div class="card card-blue">
+      <div class="card-title">🔔 Guardado inteligente</div>
+      <div class="card-subtitle">UX de cambios pendientes</div>
+      <div class="card-body">
+        <ul>
+          <li><code>hasUnsavedChanges: boolean</code> trackea modificaciones</li>
+          <li><code>ionViewWillLeave()</code> dispara alerta si hay cambios</li>
+          <li>Alerta de confirmación antes de descartar</li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <span class="tag-pill tag-blue">AlertService.alertConfirm()</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 id="screen-tab2">Tab 2 — Estructuras &amp; Timer <code>/tabs/tab2</code> (ruta por defecto)</h3>
+  <div class="alert alert-green">
+    <span>💪</span>
+    <div>Tab principal. Gestiona estructuras de entrenamiento y ejecuta el temporizador multifase. Es la ruta por defecto al abrir la app.</div>
+  </div>
+  <div class="cards-grid">
+    <div class="card card-green">
+      <div class="card-title">📋 ListStructuresComponent</div>
+      <div class="card-subtitle">Lista y gestión de estructuras</div>
+      <div class="card-body">
+        <ul>
+          <li>Lista todas las estructuras de BD</li>
+          <li>Tiempo total formateado (mm:ss)</li>
+          <li>Tap → activa timer con esa estructura</li>
+          <li>Editar → abre FormStructures</li>
+          <li>Eliminar → alerta confirm → DELETE</li>
+          <li>Botón "+" → abre FormStructures (crear)</li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <span class="tag-pill tag-green">getStructures()</span>
+        <span class="tag-pill tag-red">deleteStructure()</span>
+        <span class="tag-pill tag-orange">updateStructure()</span>
+      </div>
+    </div>
+    <div class="card card-blue">
+      <div class="card-title">📝 FormStructuresComponent</div>
+      <div class="card-subtitle">Crear / Editar estructura</div>
+      <div class="card-body">
+        <ul>
+          <li>CustomPickerComponent para min/seg</li>
+          <li>Campos: Nombre, Prep, Entreno, Descanso, Rondas, Series, Descanso entre series</li>
+          <li>Validación Angular + nombre no vacío</li>
+          <li>Calcula tiempo total automáticamente</li>
+          <li>Modo update: <code>@Input() structure</code></li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <span class="tag-pill tag-blue">createStructure()</span>
+        <span class="tag-pill tag-orange">updateStructure()</span>
+      </div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">⏱️ TrainingStructureComponent</div>
+      <div class="card-subtitle">Motor del temporizador</div>
+      <div class="card-body">
+        <ul>
+          <li>Recibe <code>@Input() structureId</code></li>
+          <li>Carga estructura desde BD</li>
+          <li>4 fases con countdown sonoro</li>
+          <li>Estado: isRunning, isPaused, currentPhase</li>
+          <li>KeepAwake activo mientras corre</li>
+          <li>Emite <code>@Output() isRunningTimer</code></li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <span class="tag-pill tag-green">getStructureForId()</span>
+        <span class="tag-pill tag-blue">SoundService.playSound()</span>
+        <span class="tag-pill tag-purple">KeepAwake.keepAwake()</span>
+      </div>
+    </div>
+  </div>
+
+  <h4>Fórmula de Tiempo Total</h4>
+  <pre><code>totalTime = preparationTime
+          + (trainingTime + restTime) × (rounds - 1)
+          + trainingTime × series
+          + restBetweenSeries × (series - 1)</code></pre>
+
+  <h3 id="screen-tab3">Tab 3 — Tabla de Progreso <code>/tabs/tab3</code></h3>
+  <div class="alert alert-blue">
+    <span>📊</span>
+    <div>Gestión completa de alumnos y su progreso histórico por ejercicio y grupo muscular.</div>
+  </div>
+  <div class="cards-grid">
+    <div class="card card-purple">
+      <div class="card-title">👥 StudentsListComponent</div>
+      <div class="card-subtitle">Lista de alumnos</div>
+      <div class="card-body">
+        <ul>
+          <li>Carga alumnos de BD</li>
+          <li>Muestra nombre y edad calculada</li>
+          <li>Tap → abre StudentProgress</li>
+          <li>Editar → FormStudents</li>
+          <li>Eliminar → confirm → DELETE (cascade progress)</li>
+          <li>Botón "+" → FormStudents crear</li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <span class="tag-pill tag-purple">getStudents()</span>
+        <span class="tag-pill tag-red">deleteStudent()</span>
+        <span class="tag-pill tag-orange">calculateAge()</span>
+      </div>
+    </div>
+    <div class="card card-blue">
+      <div class="card-title">📝 FormStudentsComponent</div>
+      <div class="card-subtitle">Crear / Editar alumno</div>
+      <div class="card-body">
+        <ul>
+          <li>Campos: Nombre, Altura, Peso, Fecha nacimiento</li>
+          <li>Validación fecha: <code>dd/mm/yyyy</code></li>
+          <li>Máscara ngx-mask: <code>00/00/0000</code></li>
+          <li>Regex: <code>^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$</code></li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <span class="tag-pill tag-blue">createStudent()</span>
+        <span class="tag-pill tag-orange">updateStudent()</span>
+      </div>
+    </div>
+    <div class="card card-purple">
+      <div class="card-title">📊 StudentProgressComponent</div>
+      <div class="card-subtitle">Tabla editable de progreso</div>
+      <div class="card-body">
+        <ul>
+          <li>Recibe <code>@Input() studentId</code></li>
+          <li>Tabla: Ejercicio | Grupo Muscular | Medida | Fecha</li>
+          <li>Botón "+" agrega fila dinámica</li>
+          <li>Detecta items nuevos (sin ID) vs existentes</li>
+          <li><code>wasModified()</code> compara JSON original</li>
+          <li>Guarda: UPDATE existentes + INSERT nuevos</li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <span class="tag-pill tag-purple">getProgressForStudentId()</span>
+        <span class="tag-pill tag-orange">updateMultipleProgress()</span>
+        <span class="tag-pill tag-blue">insertMultipleProgress()</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECCIÓN: MODELOS DE DATOS ═══ -->
+<section class="section" id="data">
+  <h2><span class="sec-icon si-yellow">🗄️</span> Modelos de Datos</h2>
+  <p>La BD se llama <code>training_timer.db</code>. El seed inicial proviene de <a href="#api-http"><code>assets/db/dbTraining.json</code></a>.</p>
+
+  <h3 id="model-configuration">Configuration</h3>
+  <table>
+    <thead><tr><th>Campo</th><th>Tipo</th><th>Descripción</th><th>Default</th></tr></thead>
+    <tbody>
+      <tr><td><code>Id</code></td><td>INTEGER PK</td><td>ID único</td><td>1</td></tr>
+      <tr><td><code>BeepSounds</code></td><td>BOOLEAN</td><td>Activar sonidos de beep</td><td>true</td></tr>
+      <tr><td><code>BeepSoundSelected</code></td><td>TEXT</td><td>Nombre del sonido activo</td><td>beep</td></tr>
+      <tr><td><code>SoundVolume</code></td><td>INTEGER</td><td>Volumen 0–10</td><td>5</td></tr>
+      <tr><td><code>VoiceNotification</code></td><td>BOOLEAN</td><td>Anuncio de voz por fase</td><td>true</td></tr>
+      <tr><td><code>DuckingEffect</code></td><td>BOOLEAN</td><td>Atenuar otros sonidos</td><td>false</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="model-structure">TrainingStructure</h3>
+  <table>
+    <thead><tr><th>Campo</th><th>Tipo</th><th>Descripción</th><th>Ejemplo (Tabata)</th></tr></thead>
+    <tbody>
+      <tr><td><code>Id</code></td><td>INTEGER PK</td><td>ID único</td><td>1</td></tr>
+      <tr><td><code>Name</code></td><td>TEXT</td><td>Nombre de la estructura</td><td>Tabata</td></tr>
+      <tr><td><code>PreparationTime</code></td><td>INTEGER</td><td>Tiempo de preparación (seg)</td><td>3</td></tr>
+      <tr><td><code>TrainingTime</code></td><td>INTEGER</td><td>Tiempo de entrenamiento (seg)</td><td>60</td></tr>
+      <tr><td><code>RestTime</code></td><td>INTEGER</td><td>Tiempo de descanso entre rondas (seg)</td><td>30</td></tr>
+      <tr><td><code>Rounds</code></td><td>INTEGER</td><td>Cantidad de rondas por serie</td><td>4</td></tr>
+      <tr><td><code>Series</code></td><td>INTEGER</td><td>Cantidad de series totales</td><td>3</td></tr>
+      <tr><td><code>RestBetweenSeries</code></td><td>INTEGER</td><td>Descanso entre series (seg)</td><td>240</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="model-student">Student</h3>
+  <table>
+    <thead><tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td><code>Id</code></td><td>INTEGER PK</td><td>ID único</td></tr>
+      <tr><td><code>Name</code></td><td>TEXT</td><td>Nombre completo</td></tr>
+      <tr><td><code>Height</code></td><td>REAL</td><td>Altura en metros (ej: 1.75)</td></tr>
+      <tr><td><code>Weight</code></td><td>REAL</td><td>Peso en kg</td></tr>
+      <tr><td><code>Birthdate</code></td><td>TEXT</td><td>Fecha de nacimiento <code>dd/mm/yyyy</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="model-progress">Progress</h3>
+  <table>
+    <thead><tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td><code>Id</code></td><td>INTEGER PK</td><td>ID único (null en filas nuevas)</td></tr>
+      <tr><td><code>StudentId</code></td><td>INTEGER FK</td><td>Referencia a <code>Student(Id)</code> ON DELETE CASCADE</td></tr>
+      <tr><td><code>ExerciseName</code></td><td>TEXT</td><td>Nombre del ejercicio</td></tr>
+      <tr><td><code>MuscleGroup</code></td><td>TEXT</td><td>Grupo muscular trabajado</td></tr>
+      <tr><td><code>Measure</code></td><td>TEXT</td><td>Medida (kg, reps, tiempo, etc.)</td></tr>
+      <tr><td><code>Date</code></td><td>TEXT</td><td>Fecha del registro <code>dd/mm/yyyy</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══ SECCIÓN: API / ENDPOINTS ═══ -->
+<section class="section" id="api">
+  <h2><span class="sec-icon si-red">🔌</span> API / Endpoints</h2>
+
+  <h3 id="api-http">HTTP Externo</h3>
+  <p>La app realiza <strong>un único request HTTP</strong>, solo en la primera instalación para sembrar la BD.</p>
+
+  <div class="endpoint-card open" id="ep-seed">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-get">GET</span>
+      <span class="endpoint-path">assets/db/dbTraining.json</span>
+      <span class="endpoint-desc">Seed inicial de la base de datos</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <table>
+        <thead><tr><th>Propiedad</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr><td>Servicio</td><td><code>SqlliteManagerService.downloadDatabase()</code></td></tr>
+          <tr><td>Trigger</td><td>Primera vez que se abre la app (no hay BD existente)</td></tr>
+          <tr><td>Tipo respuesta</td><td><code>JsonSQLite</code> (objeto con tablas y datos)</td></tr>
+          <tr><td>Validación</td><td><code>CapacitorSQLite.isJsonValid()</code> antes de importar</td></tr>
+          <tr><td>Pantallas que lo usan</td><td>App init (<a href="#screen-tab2">Tab 2</a>, <a href="#screen-tab3">Tab 3</a> se benefician del seed)</td></tr>
+        </tbody>
+      </table>
+      <pre><code>// SqlliteManagerService → downloadDatabase()
+this.http.get('assets/db/dbTraining.json')
+  .subscribe(async (jsonExport: JsonSQLite) => {
+    const jsonString = JSON.stringify(jsonExport);
+    const isValid = await CapacitorSQLite.isJsonValid({ jsonstring: jsonString });
+    if (isValid.result) {
+      await CapacitorSQLite.importFromJson({ jsonstring: jsonString });
+    }
+  });</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+      <div class="alert alert-green">
+        <span>✅</span>
+        <div>Datos iniciales: tabla <code>Configuration</code> con defaults, tabla <code>TrainingStructure</code> con "Tabata" pre-cargado.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 id="api-sqlite">SQLite Local — SqlliteManagerService</h3>
+  <p>Todos los datos persisten localmente. En web usa <strong>jeep-sqlite + IndexedDB</strong>; en Android usa <strong>SQLite nativo</strong>.</p>
+
+  <!-- Configuration CRUD -->
+  <div class="endpoint-card" id="ep-get-config">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-local">LOCAL</span>
+      <span class="endpoint-path">Configuration → getConfiguration()</span>
+      <span class="endpoint-desc">Leer configuración de audio</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <table>
+        <thead><tr><th>Parámetro</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td>—</td><td>—</td><td>Sin parámetros</td></tr>
+        </tbody>
+      </table>
+      <table>
+        <thead><tr><th>Retorno</th><th>Tipo</th></tr></thead>
+        <tbody>
+          <tr><td>Configuración activa</td><td><code>Promise&lt;Configuration[]&gt;</code></td></tr>
+        </tbody>
+      </table>
+      <p>Usado en: <a href="#screen-tab1">Tab 1 — Configuración</a>, <a href="#audio">SoundService (init)</a></p>
+      <pre><code>SELECT * FROM Configuration;</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <div class="endpoint-card" id="ep-update-config">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-put">UPDATE</span>
+      <span class="endpoint-path">Configuration → updateConfiguration(config)</span>
+      <span class="endpoint-desc">Guardar cambios de configuración</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <table>
+        <thead><tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>config</code></td><td><code>Configuration</code></td><td>Objeto completo actualizado</td></tr>
+        </tbody>
+      </table>
+      <p>Usado en: <a href="#screen-tab1">Tab 1 — ListSettings</a></p>
+      <pre><code>UPDATE Configuration
+SET BeepSounds=?, BeepSoundSelected=?, SoundVolume=?,
+    VoiceNotification=?, DuckingEffect=?
+WHERE Id=?;</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <!-- Structures CRUD -->
+  <div class="endpoint-card" id="ep-get-structures">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-local">LOCAL</span>
+      <span class="endpoint-path">TrainingStructure → getStructures()</span>
+      <span class="endpoint-desc">Leer todas las estructuras</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <p>Retorna todas las estructuras de entrenamiento creadas. Usado en <a href="#screen-tab2">ListStructuresComponent</a>.</p>
+      <pre><code>SELECT * FROM TrainingStructure ORDER BY Id;</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <div class="endpoint-card" id="ep-get-structure-id">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-local">LOCAL</span>
+      <span class="endpoint-path">TrainingStructure → getStructureForId(id)</span>
+      <span class="endpoint-desc">Leer estructura por ID</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <table>
+        <thead><tr><th>Parámetro</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody><tr><td><code>id</code></td><td><code>number</code></td><td>ID de la estructura</td></tr></tbody>
+      </table>
+      <p>Usado en: <a href="#screen-tab2">TrainingStructureComponent</a> al iniciar el timer.</p>
+      <pre><code>SELECT * FROM TrainingStructure WHERE Id=?;</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <div class="endpoint-card" id="ep-create-structure">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-post">INSERT</span>
+      <span class="endpoint-path">TrainingStructure → createStructure(structure)</span>
+      <span class="endpoint-desc">Crear nueva estructura</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <table>
+        <thead><tr><th>Parámetro</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody><tr><td><code>structure</code></td><td><code>Structure</code></td><td>Objeto sin ID (autoincrement)</td></tr></tbody>
+      </table>
+      <p>Usado en: <a href="#screen-tab2">FormStructuresComponent</a> — <code>createStructure(form)</code>.</p>
+      <pre><code>INSERT INTO TrainingStructure
+(Name, PreparationTime, TrainingTime, RestTime, Rounds, Series, RestBetweenSeries)
+VALUES (?, ?, ?, ?, ?, ?, ?);</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <div class="endpoint-card" id="ep-update-structure">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-put">UPDATE</span>
+      <span class="endpoint-path">TrainingStructure → updateStructure(structure)</span>
+      <span class="endpoint-desc">Actualizar estructura existente</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <p>Usado en: <a href="#screen-tab2">FormStructuresComponent</a> — <code>updateStructure(form)</code>.</p>
+      <pre><code>UPDATE TrainingStructure
+SET Name=?, PreparationTime=?, TrainingTime=?, RestTime=?,
+    Rounds=?, Series=?, RestBetweenSeries=?
+WHERE Id=?;</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <div class="endpoint-card" id="ep-delete-structure">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-delete">DELETE</span>
+      <span class="endpoint-path">TrainingStructure → deleteStructure(id)</span>
+      <span class="endpoint-desc">Eliminar estructura</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <p>Usado en: <a href="#screen-tab2">ListStructuresComponent</a> — previa alerta de confirmación.</p>
+      <pre><code>DELETE FROM TrainingStructure WHERE Id=?;</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <!-- Students CRUD -->
+  <div class="endpoint-card" id="ep-get-students">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-local">LOCAL</span>
+      <span class="endpoint-path">Student → getStudents()</span>
+      <span class="endpoint-desc">Leer todos los alumnos</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <p>Usado en: <a href="#screen-tab3">StudentsListComponent</a>.</p>
+      <pre><code>SELECT * FROM Student ORDER BY Name;</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <div class="endpoint-card" id="ep-create-student">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-post">INSERT</span>
+      <span class="endpoint-path">Student → createStudent(student)</span>
+      <span class="endpoint-desc">Registrar nuevo alumno</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <p>Usado en: <a href="#screen-tab3">FormStudentsComponent</a>.</p>
+      <pre><code>INSERT INTO Student (Name, Height, Weight, Birthdate)
+VALUES (?, ?, ?, ?);</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <div class="endpoint-card" id="ep-update-student">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-put">UPDATE</span>
+      <span class="endpoint-path">Student → updateStudent(student)</span>
+      <span class="endpoint-desc">Actualizar datos de alumno</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <p>Usado en: <a href="#screen-tab3">FormStudentsComponent</a> en modo edición.</p>
+      <pre><code>UPDATE Student
+SET Name=?, Height=?, Weight=?, Birthdate=?
+WHERE Id=?;</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <div class="endpoint-card" id="ep-delete-student">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-delete">DELETE</span>
+      <span class="endpoint-path">Student → deleteStudent(id)</span>
+      <span class="endpoint-desc">Eliminar alumno + progreso (CASCADE)</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <div class="alert alert-orange">
+        <span>⚠️</span>
+        <div>Eliminar un alumno borra en cascada todos sus registros de <code>Progress</code> gracias a la FK <code>ON DELETE CASCADE</code>.</div>
+      </div>
+      <pre><code>DELETE FROM Student WHERE Id=?;
+-- Progress se elimina automáticamente por ON DELETE CASCADE</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <!-- Progress CRUD -->
+  <div class="endpoint-card" id="ep-get-progress">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-local">LOCAL</span>
+      <span class="endpoint-path">Progress → getProgressForStudentId(id)</span>
+      <span class="endpoint-desc">Leer progreso de un alumno</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <p>Usado en: <a href="#screen-tab3">StudentProgressComponent</a>.</p>
+      <pre><code>SELECT * FROM Progress WHERE StudentId=? ORDER BY Date DESC;</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <div class="endpoint-card" id="ep-update-progress">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-put">UPDATE</span>
+      <span class="endpoint-path">Progress → updateMultipleProgress(list)</span>
+      <span class="endpoint-desc">Actualizar filas de progreso existentes</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <p>Solo afecta items <strong>con ID</strong> (ya guardados). Usado en <a href="#screen-tab3">StudentProgressComponent.updateProgress()</a>.</p>
+      <pre><code>-- Por cada item con Id en la lista:
+UPDATE Progress
+SET ExerciseName=?, MuscleGroup=?, Measure=?, Date=?
+WHERE Id=?;</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <div class="endpoint-card" id="ep-insert-progress">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-post">INSERT</span>
+      <span class="endpoint-path">Progress → insertMultipleProgress(list)</span>
+      <span class="endpoint-desc">Insertar nuevas filas de progreso</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <p>Solo afecta items <strong>sin ID</strong> (filas nuevas agregadas con "+"). Usado en <a href="#screen-tab3">StudentProgressComponent.updateProgress()</a>.</p>
+      <pre><code>-- Por cada item sin Id en la lista:
+INSERT INTO Progress (StudentId, ExerciseName, MuscleGroup, Measure, Date)
+VALUES (?, ?, ?, ?, ?);</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+    </div>
+  </div>
+
+  <h3 id="api-sound">Servicio de Sonido — SoundService</h3>
+
+  <div class="endpoint-card" id="ep-sound-play">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-local">LOCAL</span>
+      <span class="endpoint-path">SoundService → playSound()</span>
+      <span class="endpoint-desc">Reproduce beep configurado</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <p>Respeta <code>BeepSounds</code> y <code>SoundVolume</code> de la <a href="#model-configuration">Configuración</a>. Usado en <a href="#screen-tab2">TrainingStructureComponent</a> al inicio de Entrenamiento.</p>
+      <table>
+        <thead><tr><th>Sonido</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>beep</code></td><td>Beep simple estándar</td></tr>
+          <tr><td><code>beepSuccess</code></td><td>Beep de éxito</td></tr>
+          <tr><td><code>beepWarning</code></td><td>Beep de advertencia</td></tr>
+          <tr><td><code>buzzer</code></td><td>Buzzer largo</td></tr>
+          <tr><td><code>buzzerIncorrect</code></td><td>Buzzer incorrecto</td></tr>
+          <tr><td><code>bell</code></td><td>Campana</td></tr>
+          <tr><td><code>bellRing</code></td><td>Campana timbre</td></tr>
+          <tr><td><code>bellChurch</code></td><td>Campana iglesia</td></tr>
+          <tr><td><code>whistleCalling</code></td><td>Silbato de llamada</td></tr>
+          <tr><td><code>whistleReferee</code></td><td>Silbato de árbitro</td></tr>
+          <tr><td><code>microwaveTimer</code></td><td>Timer de microondas</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="endpoint-card" id="ep-sound-voice">
+    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+      <span class="method-badge method-local">LOCAL</span>
+      <span class="endpoint-path">SoundService → playSoundVoice(phase)</span>
+      <span class="endpoint-desc">Reproduce voz de fase</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="endpoint-body">
+      <table>
+        <thead><tr><th>Phase</th><th>Voz reproducida</th><th>Idiomas</th></tr></thead>
+        <tbody>
+          <tr><td><code>Preparation</code></td><td>"Preparación" / "Get ready"</td><td>es, en</td></tr>
+          <tr><td><code>Training</code></td><td>"Entrenamiento" / "Training"</td><td>es, en</td></tr>
+          <tr><td><code>Rest</code></td><td>"Descanso" / "Rest"</td><td>es, en</td></tr>
+          <tr><td><code>RestBetweenSeries</code></td><td>"Descanso entre series" / "Rest between series"</td><td>es, en</td></tr>
+          <tr><td><code>number3</code></td><td>"Tres" / "Three"</td><td>es, en</td></tr>
+          <tr><td><code>number2</code></td><td>"Dos" / "Two"</td><td>es, en</td></tr>
+          <tr><td><code>number1</code></td><td>"Uno" / "One"</td><td>es, en</td></tr>
+        </tbody>
+      </table>
+      <p>Ruta de assets: <code>assets/sounds/voice/{idioma}/{fase}.mpeg</code></p>
+    </div>
+  </div>
+
+  <h3 id="api-alert">Servicio de Alertas — AlertService</h3>
+  <div class="cards-grid">
+    <div class="card card-yellow">
+      <div class="card-title">💬 alertMessage(header, msg)</div>
+      <div class="card-subtitle">Alerta informativa</div>
+      <div class="card-body">Muestra un diálogo Ionic con un botón "OK". Usado en bienvenida al iniciar la app y mensajes informativos.</div>
+    </div>
+    <div class="card card-red">
+      <div class="card-title">⚠️ alertConfirm(header, msg, fn)</div>
+      <div class="card-subtitle">Alerta de confirmación</div>
+      <div class="card-body">Muestra diálogo con "Cancelar" y "Confirmar". El callback <code>fn</code> se ejecuta al confirmar. Usado en eliminación de estructuras, alumnos y cambios sin guardar.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECCIÓN: MAPEO ═══ -->
+<section class="section" id="mapping">
+  <h2><span class="sec-icon si-purple">🗺️</span> Mapeo Pantallas ↔ Endpoints</h2>
+  <p>Tabla completa de qué endpoint usa cada pantalla/componente.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Pantalla / Componente</th>
+        <th>Ruta</th>
+        <th>Endpoints usados</th>
+        <th>Operaciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="map-screen">AppComponent (init)</td>
+        <td><code>/</code></td>
+        <td class="map-endpoint"><a href="#ep-seed"><code>GET assets/db/dbTraining.json</code></a></td>
+        <td><span class="tag-pill tag-green">READ</span></td>
+      </tr>
+      <tr>
+        <td class="map-screen">Tab 1 — ListSettings</td>
+        <td><code>/tabs/tab1</code></td>
+        <td class="map-endpoint">
+          <a href="#ep-get-config"><code>getConfiguration()</code></a><br>
+          <a href="#ep-update-config"><code>updateConfiguration()</code></a>
+        </td>
+        <td><span class="tag-pill tag-green">READ</span><span class="tag-pill tag-orange">UPDATE</span></td>
+      </tr>
+      <tr>
+        <td class="map-screen">Tab 2 — ListStructures</td>
+        <td><code>/tabs/tab2</code></td>
+        <td class="map-endpoint">
+          <a href="#ep-get-structures"><code>getStructures()</code></a><br>
+          <a href="#ep-delete-structure"><code>deleteStructure(id)</code></a>
+        </td>
+        <td><span class="tag-pill tag-green">READ</span><span class="tag-pill tag-red">DELETE</span></td>
+      </tr>
+      <tr>
+        <td class="map-screen">Tab 2 — FormStructures (crear)</td>
+        <td><code>/tabs/tab2</code></td>
+        <td class="map-endpoint"><a href="#ep-create-structure"><code>createStructure(structure)</code></a></td>
+        <td><span class="tag-pill tag-blue">INSERT</span></td>
+      </tr>
+      <tr>
+        <td class="map-screen">Tab 2 — FormStructures (editar)</td>
+        <td><code>/tabs/tab2</code></td>
+        <td class="map-endpoint"><a href="#ep-update-structure"><code>updateStructure(structure)</code></a></td>
+        <td><span class="tag-pill tag-orange">UPDATE</span></td>
+      </tr>
+      <tr>
+        <td class="map-screen">Tab 2 — TrainingStructure (timer)</td>
+        <td><code>/tabs/tab2</code></td>
+        <td class="map-endpoint">
+          <a href="#ep-get-structure-id"><code>getStructureForId(id)</code></a><br>
+          <a href="#ep-sound-play"><code>SoundService.playSound()</code></a><br>
+          <a href="#ep-sound-voice"><code>SoundService.playSoundVoice(phase)</code></a>
+        </td>
+        <td><span class="tag-pill tag-green">READ</span><span class="tag-pill tag-purple">AUDIO</span></td>
+      </tr>
+      <tr>
+        <td class="map-screen">Tab 3 — StudentsList</td>
+        <td><code>/tabs/tab3</code></td>
+        <td class="map-endpoint">
+          <a href="#ep-get-students"><code>getStudents()</code></a><br>
+          <a href="#ep-delete-student"><code>deleteStudent(id)</code></a>
+        </td>
+        <td><span class="tag-pill tag-green">READ</span><span class="tag-pill tag-red">DELETE</span></td>
+      </tr>
+      <tr>
+        <td class="map-screen">Tab 3 — FormStudents (crear)</td>
+        <td><code>/tabs/tab3</code></td>
+        <td class="map-endpoint"><a href="#ep-create-student"><code>createStudent(student)</code></a></td>
+        <td><span class="tag-pill tag-blue">INSERT</span></td>
+      </tr>
+      <tr>
+        <td class="map-screen">Tab 3 — FormStudents (editar)</td>
+        <td><code>/tabs/tab3</code></td>
+        <td class="map-endpoint"><a href="#ep-update-student"><code>updateStudent(student)</code></a></td>
+        <td><span class="tag-pill tag-orange">UPDATE</span></td>
+      </tr>
+      <tr>
+        <td class="map-screen">Tab 3 — StudentProgress</td>
+        <td><code>/tabs/tab3</code></td>
+        <td class="map-endpoint">
+          <a href="#ep-get-progress"><code>getProgressForStudentId(id)</code></a><br>
+          <a href="#ep-update-progress"><code>updateMultipleProgress(list)</code></a><br>
+          <a href="#ep-insert-progress"><code>insertMultipleProgress(list)</code></a>
+        </td>
+        <td><span class="tag-pill tag-green">READ</span><span class="tag-pill tag-orange">UPDATE</span><span class="tag-pill tag-blue">INSERT</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══ SECCIÓN: ARQUITECTURA ═══ -->
+<section class="section" id="arch">
+  <h2><span class="sec-icon si-blue">🏗️</span> Arquitectura</h2>
+
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+%%{init:{'theme':'dark','themeVariables':{'primaryColor':'#1c2128','primaryTextColor':'#e6edf3','primaryBorderColor':'#30363d','lineColor':'#58a6ff','secondaryColor':'#161b22','tertiaryColor':'#21262d','edgeLabelBackground':'#1c2128','clusterBkg':'#1c2128'}}}%%
+graph TB
+    subgraph APP["app.component.ts"]
+        INIT[initApp]
+    end
+    subgraph SERVICES["Servicios"]
+        SQL[SqlliteManagerService\nBD + observables]
+        SND[SoundService\naudio + voces]
+        ALT[AlertService\nIonic dialogs]
+    end
+    subgraph TABS["TabsPage — Router"]
+        T1[Tab1\n/tabs/tab1]
+        T2[Tab2\n/tabs/tab2 ★]
+        T3[Tab3\n/tabs/tab3]
+    end
+    subgraph COMPONENTS["Componentes"]
+        C1[ListSettings]
+        C2A[ListStructures]
+        C2B[FormStructures]
+        C2C[TrainingStructure\nTIMER]
+        C3A[StudentsList]
+        C3B[FormStudents]
+        C3C[StudentProgress]
+    end
+    subgraph DB["Base de Datos SQLite"]
+        TBL1[(Configuration)]
+        TBL2[(TrainingStructure)]
+        TBL3[(Student)]
+        TBL4[(Progress)]
+    end
+    subgraph SHARED["Componentes Shared"]
+        LD[ListDataComponent]
+        CP[CustomPickerComponent]
+    end
+    INIT --> SQL
+    INIT --> SND
+    INIT --> TABS
+    T1 --> C1
+    T2 --> C2A & C2B & C2C
+    T3 --> C3A & C3B & C3C
+    C1 --> SQL
+    C2A & C2B --> SQL
+    C2C --> SQL & SND
+    C3A & C3B & C3C --> SQL
+    C1 --> SND
+    C1 & C2A & C3A --> ALT
+    SQL --> TBL1 & TBL2 & TBL3 & TBL4
+    C2A & C3A --> LD
+    C2B --> CP
+    style APP fill:#1b3040
+    style SERVICES fill:#1b3e2d
+    style TABS fill:#3d2e0a
+    style COMPONENTS fill:#2d1e4a
+    style DB fill:#3d0f0f
+    style SHARED fill:#1c2128
+    </div>
+  </div>
+
+  <h3>Rutas</h3>
+  <table>
+    <thead><tr><th>Ruta</th><th>Módulo</th><th>Tab</th><th>Default</th></tr></thead>
+    <tbody>
+      <tr><td><code>/</code></td><td>AppModule</td><td>→ redirect <code>/tabs/tab2</code></td><td>—</td></tr>
+      <tr><td><code>/tabs/tab1</code></td><td>Tab1PageModule</td><td>Configuración</td><td>—</td></tr>
+      <tr><td><code>/tabs/tab2</code></td><td>Tab2PageModule</td><td>Estructuras &amp; Timer</td><td>✅</td></tr>
+      <tr><td><code>/tabs/tab3</code></td><td>Tab3PageModule</td><td>Progreso</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p>Todos los módulos usan <strong>lazy loading</strong> con <code>PreloadAllModules</code>.</p>
+</section>
+
+<!-- ═══ SECCIÓN: AUDIO ═══ -->
+<section class="section" id="audio">
+  <h2><span class="sec-icon si-orange">🔊</span> Sistema de Audio</h2>
+
+  <div class="alert alert-blue">
+    <span>ℹ️</span>
+    <div>SoundService escucha el <strong>observable de configuración</strong> (<code>getConfigurationObservable()</code>) y actualiza automáticamente volumen y sonido cuando cambian en Tab1.</div>
+  </div>
+
+  <h3>Flujo de audio en el timer</h3>
+  <table>
+    <thead><tr><th>Momento</th><th>Método</th><th>Condición</th></tr></thead>
+    <tbody>
+      <tr><td>Inicio de Preparación</td><td><code>playSoundVoice('Preparation')</code></td><td>VoiceNotification = true</td></tr>
+      <tr><td>Countdown 3</td><td><code>playSoundVoice('number3')</code></td><td>VoiceNotification = true</td></tr>
+      <tr><td>Countdown 2</td><td><code>playSoundVoice('number2')</code></td><td>VoiceNotification = true</td></tr>
+      <tr><td>Countdown 1</td><td><code>playSoundVoice('number1')</code></td><td>VoiceNotification = true</td></tr>
+      <tr><td>Inicio de Entrenamiento</td><td><code>playSound()</code></td><td>BeepSounds = true</td></tr>
+      <tr><td>Inicio de Descanso</td><td><code>playSoundVoice('Rest')</code></td><td>VoiceNotification = true</td></tr>
+      <tr><td>Inicio de Descanso entre Series</td><td><code>playSoundVoice('RestBetweenSeries')</code></td><td>VoiceNotification = true</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Estructura de assets de audio</h3>
+  <pre><code>assets/sounds/
+├── voice/
+│   ├── es/
+│   │   ├── Preparation.mpeg
+│   │   ├── Training.mpeg
+│   │   ├── Rest.mpeg
+│   │   ├── RestBetweenSeries.mpeg
+│   │   ├── number1.mpeg
+│   │   ├── number2.mpeg
+│   │   └── number3.mpeg
+│   └── en/
+│       └── (mismos archivos en inglés)
+├── beep.mpeg
+├── beepSuccess.mpeg
+├── beepWarning.mpeg
+├── buzzer.mpeg
+├── buzzerIncorrect.mpeg
+├── bell.mpeg
+├── bellRing.mpeg
+├── bellChurch.mpeg
+├── whistleCalling.mpeg
+├── whistleReferee.mpeg
+└── microwaveTimer.mpeg</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+</section>
+
+<!-- ═══ SECCIÓN: I18N ═══ -->
+<section class="section" id="i18n">
+  <h2><span class="sec-icon si-green">🌍</span> Internacionalización</h2>
+
+  <div class="cards-grid">
+    <div class="card card-green">
+      <div class="card-title">🌐 @ngx-translate</div>
+      <div class="card-subtitle">Textos de UI</div>
+      <div class="card-body">
+        <ul>
+          <li>Detecta idioma del dispositivo con <code>Device.getLanguageCode()</code></li>
+          <li>Usa los primeros 2 caracteres (<code>'es'</code>, <code>'en'</code>)</li>
+          <li>Fallback: <code>'es'</code> por defecto</li>
+          <li>Archivos: <code>assets/i18n/es.json</code> y <code>en.json</code></li>
+          <li>60+ claves de traducción</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card card-blue">
+      <div class="card-title">🔊 Voces</div>
+      <div class="card-subtitle">Audio localizado</div>
+      <div class="card-body">
+        <ul>
+          <li>SoundService usa el mismo idioma detectado</li>
+          <li>Mapea <code>voiceMap[idioma][fase]</code> a ruta de archivo</li>
+          <li>Reproduce con <code>HTMLAudioElement</code> nativo</li>
+          <li>Si el idioma no está soportado → usa <code>'en'</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECCIÓN: PWA ═══ -->
+<section class="section" id="pwa">
+  <h2><span class="sec-icon si-purple">📦</span> PWA &amp; Deploy</h2>
+
+  <div class="cards-grid">
+    <div class="card card-purple">
+      <div class="card-title">📱 PWA</div>
+      <div class="card-subtitle">Instalable en escritorio y móvil</div>
+      <div class="card-body">
+        <ul>
+          <li>Service Worker (<code>ngsw-config.json</code>)</li>
+          <li>Evento <code>beforeinstallprompt</code> capturado</li>
+          <li>Botón "Instalar app" condicional</li>
+          <li>Funciona offline gracias al SW</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">🔥 Firebase Hosting</div>
+      <div class="card-subtitle">Deploy web</div>
+      <div class="card-body">
+        <ul>
+          <li>Configurado en <code>firebase.json</code></li>
+          <li>Proyecto en <code>.firebaserc</code></li>
+          <li>Caché en <code>.firebase/hosting.*.cache</code></li>
+          <li>Build: <code>ionic build --prod</code></li>
+        </ul>
+      </div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">🤖 Android APK</div>
+      <div class="card-subtitle">Capacitor nativo</div>
+      <div class="card-body">
+        <ul>
+          <li>Proyecto en <code>/android</code></li>
+          <li>SQLite nativo (no jeep-sqlite)</li>
+          <li>KeepAwake funcional en hardware</li>
+          <li>StatusBar y Keyboard nativos</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>Comandos de build</h3>
+  <pre><code># Desarrollo
+ionic serve
+
+# Build web (PWA)
+ionic build --configuration=production
+firebase deploy
+
+# Build Android
+ionic capacitor sync android
+ionic capacitor open android
+# → Generar APK desde Android Studio</code><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+</section>
+
+</main><!-- /main -->
+
+<!-- ═══════════════════════════════════════════════════ SCRIPTS -->
+<script>
+// ─── Mermaid init ───
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'dark',
+  themeVariables: {
+    primaryColor: '#1c2128',
+    primaryTextColor: '#e6edf3',
+    primaryBorderColor: '#30363d',
+    lineColor: '#58a6ff',
+    secondaryColor: '#161b22',
+    tertiaryColor: '#21262d',
+    edgeLabelBackground: '#1c2128',
+    clusterBkg: '#161b22',
+    titleColor: '#e6edf3',
+  }
+});
+
+// ─── TOC Search ───
+const searchInput = document.getElementById('toc-search');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  document.querySelectorAll('#toc-list li').forEach(li => {
+    const text = li.textContent.toLowerCase();
+    li.classList.toggle('hidden', q.length > 0 && !text.includes(q));
+  });
+});
+
+// ─── Active TOC on scroll ───
+const sections = Array.from(document.querySelectorAll('.section[id], h3[id]'));
+const tocLinks = document.querySelectorAll('#toc-list li a');
+
+function getActiveId() {
+  const scrollY = window.scrollY + 120;
+  let current = sections[0]?.id || '';
+  for (const sec of sections) {
+    if (sec.offsetTop <= scrollY) current = sec.id;
+    else break;
+  }
+  return current;
+}
+
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      const id = getActiveId();
+      tocLinks.forEach(a => {
+        const href = a.getAttribute('href').slice(1);
+        a.classList.toggle('active', href === id);
+      });
+      // scroll active link into view in sidebar
+      const active = document.querySelector('#toc-list li a.active');
+      if (active) {
+        const sidebar = document.getElementById('toc-sidebar');
+        const linkTop = active.offsetTop;
+        const sidebarH = sidebar.clientHeight;
+        const scrollTop = sidebar.scrollTop;
+        const headerH = document.querySelector('.toc-header').offsetHeight;
+        if (linkTop < scrollTop + headerH || linkTop > scrollTop + sidebarH - 40) {
+          sidebar.scrollTo({ top: linkTop - sidebarH / 2, behavior: 'smooth' });
+        }
+      }
+      ticking = false;
+    });
+    ticking = true;
+  }
+}, { passive: true });
+
+// ─── Smooth scroll for TOC links ───
+tocLinks.forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', '#' + id);
+    }
+  });
+});
+
+// ─── Endpoint accordion toggle ───
+function toggleEndpoint(header) {
+  const card = header.closest('.endpoint-card');
+  card.classList.toggle('open');
+}
+
+// ─── Copy button ───
+function copyCode(btn) {
+  const pre = btn.closest('pre');
+  const code = pre.querySelector('code');
+  const text = code ? code.textContent : pre.textContent.replace(/Copiar$/, '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copiado';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copiar';
+      btn.classList.remove('copied');
+    }, 1800);
+  }).catch(() => {
+    btn.textContent = 'Error';
+    setTimeout(() => { btn.textContent = 'Copiar'; }, 1500);
+  });
+}
+
+// ─── Add copy buttons to all pre elements without one ───
+document.querySelectorAll('pre:not(:has(.copy-btn))').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'Copiar';
+  btn.setAttribute('onclick', 'copyCode(this)');
+  pre.appendChild(btn);
+});
+
+// ─── Initial active state ───
+window.dispatchEvent(new Event('scroll'));
+</script>
+</body>
+</html>
